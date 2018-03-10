@@ -50,8 +50,19 @@ namespace AuthServer.Core
                     },
                     //AlwaysIncludeUserClaimsInIdToken = true
 
-                }
+                },
                 //or Angular Client
+                new Client {
+                    ClientId = "angular_spa",
+                    ClientName = "Angular 4 Client",
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedScopes = new List<string> { "openid", "profile", "api1" },
+                    RedirectUris = new List<string> { "http://localhost:5003/auth-callback" },
+                    PostLogoutRedirectUris = new List<string> { "http://localhost:5003/" },
+                    AllowedCorsOrigins = new List<string> { "http://localhost:5003" },
+                    RequireConsent = false,
+                    AllowAccessTokensViaBrowser = true
+                }
                 //Winforms Client
                 //Android Client
             };

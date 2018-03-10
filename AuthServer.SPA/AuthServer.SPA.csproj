@@ -20,6 +20,22 @@
     <Content Remove="ClientApp\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ClientApp\app\authentication\authGuard\authGuard.ts" />
+    <None Remove="ClientApp\app\authentication\authService.ts" />
+    <None Remove="ClientApp\app\authentication\root.component.ts" />
+    <None Remove="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
+    <None Remove="ClientApp\app\components\protected\protected.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\app\authentication\authGuard\authGuard.ts" />
+    <TypeScriptCompile Include="ClientApp\app\authentication\authService.ts" />
+    <TypeScriptCompile Include="ClientApp\app\authentication\root.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
+    <TypeScriptCompile Include="ClientApp\app\components\protected\protected.component.ts" />
+  </ItemGroup>
+
   <Target Name="DebugRunWebpack" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('wwwroot\dist') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
@@ -43,7 +59,7 @@
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
       <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
-      <ResolvedFileToPublish Include="@(DistFiles-&gt;'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>%(DistFiles.Identity)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </ResolvedFileToPublish>
