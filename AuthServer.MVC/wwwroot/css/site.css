@@ -1,0 +1,17 @@
+﻿.brand-logo {
+    margin-left: 5px;   
+}
+
+body {
+    margin-bottom: 50px;
+}
+
+.footer {
+    position: fixed;
+    height: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin-bottom: 0;
+}

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AuthServer.MVC</title>
+
+    <environment include="Development">
+        <link href="~/lib/materialize/materialize/css/materialize.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"
+                asp-fallback-href="~/lib/materialize/materialize/css/materialize.min.css"
+                asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    @{
+        var activeRoute = ViewContext.RouteData.Values["action"]; 
+    }
+<nav>
+    <div class="nav-wrapper cyan darken-4">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-logo">AuthServer.MVC</a>
+        <a asp-area="" asp-controller="Home" asp-action="Index" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li class="@(activeRoute.ToString() == "Index" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="@(activeRoute.ToString() == "About" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+            <li class="@(activeRoute.ToString() == "Contact" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+        </ul>
+        <ul class="side-nav" id="mobile-demo">
+            <li class="@(activeRoute.ToString() == "Index" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="@(activeRoute.ToString() == "About" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
+            <li class="@(activeRoute.ToString() == "Contact" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+        </ul>
+    </div>
+</nav>
+    <div>
+        @RenderBody()
+        
+        <footer class="footer">
+            <hr />
+            <p>&copy; @DateTime.Now.Year - AuthServer.MVC</p>
+        </footer>
+    </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/lib/materialize/materialize/js/materialize.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+<script>
+    $(document).ready(function() {
+        $(".button-collapse").sideNav();
+    });
+</script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
