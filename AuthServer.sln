@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.ConsoleApp", "AuthServer.ConsoleApp\AuthServer.ConsoleApp.csproj", "{3DE6A100-AB9E-4969-8BAD-4025ED45296B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer.Core", "AuthServer.Core\AuthServer.Core.csproj", "{F5293301-79BE-4AE4-A53F-B6AFDBAB2F93}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.Core", "AuthServer.Core\AuthServer.Core.csproj", "{F5293301-79BE-4AE4-A53F-B6AFDBAB2F93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer.MVC", "AuthServer.MVC\AuthServer.MVC.csproj", "{6DB35131-59F4-4211-B295-36BA4D18B5CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer.MVC", "AuthServer.MVC\AuthServer.MVC.csproj", "{6DB35131-59F4-4211-B295-36BA4D18B5CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
