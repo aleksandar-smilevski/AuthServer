@@ -1,6 +1,8 @@
 import 'reflect-metadata';
 import 'zone.js';
 import 'bootstrap';
+import '../node_modules/materialize-css/dist/css/materialize.min.css';
+import '../node_modules/materialize-css/dist/js/materialize.min.js';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { AppModule } from './app/app.module.browser';

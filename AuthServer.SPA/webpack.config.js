@@ -19,7 +19,17 @@ module.exports = (env) => {
             rules: [
                 { test: /\.ts$/, include: /ClientApp/, use: isDevBuild ? ['awesome-typescript-loader?silent=true', 'angular2-template-loader'] : '@ngtools/webpack' },
                 { test: /\.html$/, use: 'html-loader?minimize=false' },
-                { test: /\.css$/, use: [ 'to-string-loader', isDevBuild ? 'css-loader' : 'css-loader?minimize' ] },
+                { //this rule will only be used for any vendors
+                    test: /\.css$/,
+                    loaders: ['style-loader', 'css-loader'],
+                    include: [/node_modules/]
+                },
+                {
+                    test: /\.css$/,
+                    loaders: ['to-string-loader', 'css-loader'],
+                    exclude: [/node_modules/] //add this line so we ignore css coming from node_modules
+                },
+                { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
                 { test: /\.(png|jpg|jpeg|gif|svg)$/, use: 'url-loader?limit=25000' }
             ]
         },

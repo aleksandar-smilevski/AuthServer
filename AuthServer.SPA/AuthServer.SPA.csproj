@@ -24,6 +24,7 @@
     <None Remove="ClientApp\app\authentication\authGuard\authGuard.ts" />
     <None Remove="ClientApp\app\authentication\authService.ts" />
     <None Remove="ClientApp\app\authentication\root.component.ts" />
+    <None Remove="ClientApp\app\components\app\app.component.scss" />
     <None Remove="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
     <None Remove="ClientApp\app\components\protected\protected.component.ts" />
   </ItemGroup>

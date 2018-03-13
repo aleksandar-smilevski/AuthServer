@@ -1,5 +1,6 @@
 ﻿import { Component, OnInit } from "@angular/core";
 import { AuthService } from "../../authentication/authService";
+import { Router } from "@angular/router";
 
 
 @Component({
@@ -7,11 +8,11 @@ import { AuthService } from "../../authentication/authService";
 })
 export class AuthCallback implements OnInit {
 
-    constructor(private authService: AuthService) {
-        
-    }
+    constructor(private authService: AuthService, private router: Router) {}
 
     ngOnInit(): void {
-        this.authService.completeAuthentication();
+        this.authService.completeAuthentication().then(() => {
+            this.router.navigate([this.authService.getRedirectUrl()]);
+        });
     }
 }

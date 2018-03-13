@@ -1,9 +1,37 @@
 <div class='container-fluid'>
     <div class='row'>
-        <h3><a routerLink="/">Home</a> | <a routerLink="/protected">Protected</a></h3>
-        <h1>
-            {{title}}
-        </h1>
+        <nav>
+            <mz-navbar>
+                <a href="#" class="brand-logo">AuthServer.SPA</a>
+                <a href="#" class="hide-on-large-only" id="btn-sidenav-demo">
+                    <i class="material-icons">menu</i>
+                </a>
+                <mz-navbar-item-container [align]="'right'">
+                    <mz-navbar-item><a routerLink="/home">Home</a></mz-navbar-item>
+                    <mz-navbar-item><a routerLink="/protected">Protected</a></mz-navbar-item>
+                </mz-navbar-item-container>
+            </mz-navbar>
+            <mz-sidenav
+                [id]="'sidenav-demo'"
+                [collapseButtonId]="'btn-sidenav-demo'">
+                <mz-sidenav-header>
+                    Sidenav header
+                </mz-sidenav-header>
+                <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
+                <mz-sidenav-link>
+                    <a href="#">First Link</a>
+                </mz-sidenav-link>
+                <mz-sidenav-divider></mz-sidenav-divider>
+                <mz-sidenav-link [active]="true">
+                    <a href="#">Active Link</a>
+                </mz-sidenav-link>
+                <mz-sidenav-divider></mz-sidenav-divider>
+                <mz-sidenav-link>
+                    <a href="#" class="waves-effect">Second Link With Waves</a>
+                </mz-sidenav-link>
+            </mz-sidenav>
+            
+        </nav>
         <router-outlet></router-outlet>
     </div>
 </div>

@@ -36,6 +36,14 @@ export class AuthService {
             this.user = user;
         });
     }
+
+    setRedirectUrl(url: string){
+        localStorage.setItem("redirectUrl", url);
+    }
+
+    getRedirectUrl(): string | null {
+        return localStorage.getItem("redirectUrl");
+    }
 }
 
 export function getClientSettings(): UserManagerSettings {
