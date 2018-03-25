@@ -62,9 +62,22 @@ namespace AuthServer.Core
                     AllowedCorsOrigins = new List<string> { "http://localhost:5003" },
                     RequireConsent = false,
                     AllowAccessTokensViaBrowser = true
-                }
+                },
                 //Winforms Client
                 //Android Client
+                new Client
+                {
+                    ClientId = "AuthServer.Android",
+                    ClientName = "Android Client",
+                    ClientSecrets =
+                    {
+                        new Secret("myClientSecret".Sha256())
+                    },
+                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedScopes = new List<string> { "openid", "profile", "api1" },
+                    RedirectUris = new List<string> { "com.authserver.android://callback" },
+                    RequireConsent = false
+                }
             };
         }
 
