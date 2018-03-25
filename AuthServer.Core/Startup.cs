@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
@@ -70,13 +71,23 @@ namespace AuthServer.Core
             });
         }
 
-        public void MigrateDatabase(IApplicationBuilder app)
+        private void MigrateDatabase(IApplicationBuilder app)
         {
             var scopeFactory = app.ApplicationServices.GetService<IServiceScopeFactory>();
             using (var scope = scopeFactory.CreateScope())
             {
                 var appDbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
                 appDbContext.Database.Migrate();
+
+                var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+
+                if (!userManager.Users.Any())
+                {
+                    foreach (var user in Config.GetUsers())
+                    {
+                        userManager.CreateAsync(user, "Password123!").Wait();
+                    }
+                }
             }
         }
     }

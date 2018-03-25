@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AuthServer.Core.Models;
 using IdentityServer4;
 using IdentityServer4.Models;
 
@@ -88,6 +89,17 @@ namespace AuthServer.Core
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email()
+            };
+        }
+
+        public static IEnumerable<ApplicationUser> GetUsers()
+        {
+            return new List<ApplicationUser>
+            {
+                new ApplicationUser("Admin"),
+                new ApplicationUser("Customer1"),
+                new ApplicationUser("Customer2"),
+                new ApplicationUser("Employee")
             };
         }
     }
