@@ -111,7 +111,7 @@ namespace AuthServer.Core.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View("Error");
             }
 
             var user = await _userManager.GetUserAsync(User);

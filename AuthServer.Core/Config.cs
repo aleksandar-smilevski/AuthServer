@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AuthServer.Core.Models;
 using IdentityServer4;
 using IdentityServer4.Models;
 
@@ -62,9 +63,22 @@ namespace AuthServer.Core
                     AllowedCorsOrigins = new List<string> { "http://localhost:5003" },
                     RequireConsent = false,
                     AllowAccessTokensViaBrowser = true
-                }
+                },
                 //Winforms Client
                 //Android Client
+                new Client
+                {
+                    ClientId = "AuthServer.Android",
+                    ClientName = "Android Client",
+                    ClientSecrets =
+                    {
+                        new Secret("myClientSecret".Sha256())
+                    },
+                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedScopes = new List<string> { "openid", "profile", "api1" },
+                    RedirectUris = new List<string> { "com.authserver.android://callback" },
+                    RequireConsent = false
+                }
             };
         }
 
@@ -75,6 +89,17 @@ namespace AuthServer.Core
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email()
+            };
+        }
+
+        public static IEnumerable<ApplicationUser> GetUsers()
+        {
+            return new List<ApplicationUser>
+            {
+                new ApplicationUser("Admin"),
+                new ApplicationUser("Customer1"),
+                new ApplicationUser("Customer2"),
+                new ApplicationUser("Employee")
             };
         }
     }
