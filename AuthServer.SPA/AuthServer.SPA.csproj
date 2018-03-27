@@ -32,7 +32,6 @@
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\app\authentication\authGuard\authGuard.ts" />
     <TypeScriptCompile Include="ClientApp\app\authentication\authService.ts" />
-    <TypeScriptCompile Include="ClientApp\app\authentication\root.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\auth-callback\auth-callback.component.ts" />
     <TypeScriptCompile Include="ClientApp\app\components\protected\protected.component.ts" />
   </ItemGroup>

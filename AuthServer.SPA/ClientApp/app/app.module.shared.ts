@@ -15,7 +15,6 @@ import { AuthGuardService } from './authentication/authGuard/authGuard';
 import { AuthService } from './authentication/authService';
 import { AuthCallback } from './components/auth-callback/auth-callback.component';
 import { AppComponent } from './components/app/app.component';
-import { RootComponent } from './authentication/root.component';
 import { HomeComponent } from "./components/home/home.component";
 
 const routes: Routes = [
@@ -40,7 +39,6 @@ const routes: Routes = [
         AuthCallback,
         AppComponent,
         HomeComponent,
-        RootComponent,
         ProtectedComponent
     ],
     imports: [
