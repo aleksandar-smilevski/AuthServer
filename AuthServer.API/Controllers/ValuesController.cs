@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthServer.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.API.Controllers
@@ -9,6 +10,15 @@ namespace AuthServer.API.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+        
+        private readonly AuthorRepository _authorRepository;
+
+        public ValuesController(AuthorRepository authorRepository)
+        {
+            _authorRepository = authorRepository;
+        }
+
+        
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -18,9 +28,10 @@ namespace AuthServer.API.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get(Guid id)
         {
-            return "value";
+            var result = _authorRepository.GetById(id);
+            return String.Empty;
         }
 
         // POST api/values
