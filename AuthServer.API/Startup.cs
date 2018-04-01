@@ -1,11 +1,15 @@
 ﻿using AuthServer.API.Database;
 using AuthServer.API.Repositories;
+using AuthServer.API.Repositories.Author;
 using AuthServer.API.Repositories.BaseRepository;
+using AuthServer.API.Services;
+using AuthServer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace AuthServer.API
 {
@@ -26,8 +30,14 @@ namespace AuthServer.API
             services.AddDbContext<ApplicationDbContext>(opts =>
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
-            services.AddTransient(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
-            services.AddTransient<AuthorRepository>();    
+            services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
+            services.AddScoped<IAuthorRepository,AuthorRepository>();
+            services.AddScoped<IAuthorsService, AuthorsService>();
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "AuthServer.API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,6 +47,15 @@ namespace AuthServer.API
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthServer.API");
+            });
+
 
             app.UseMvc();
         }

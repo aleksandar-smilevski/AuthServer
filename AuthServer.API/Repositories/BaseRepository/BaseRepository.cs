@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +17,14 @@ namespace AuthServer.API.Repositories.BaseRepository
             _dbContext = dbContext;
         }
 
-
-        public IQueryable<TEntity> GetAll()
+        public IQueryable<TEntity> GetAsQueryable()
         {
             return _dbContext.Set<TEntity>().AsNoTracking();
+        }
+
+        public async Task<List<TEntity>> GetAll()
+        {
+            return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
         public async Task<TEntity> GetById(TKey id)
