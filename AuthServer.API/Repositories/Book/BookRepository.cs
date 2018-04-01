@@ -5,25 +5,24 @@ using AuthServer.API.Database;
 using AuthServer.API.Models;
 using AuthServer.API.Repositories.BaseRepository;
 
-namespace AuthServer.API.Repositories.Author
+namespace AuthServer.API.Repositories.Book
 {
-    public class AuthorRepository : BaseRepository<Models.Author, Guid>, IAuthorRepository
+    public class BookRepository: BaseRepository<Models.Book, Guid>, IBookRepository
     {
         private readonly ApplicationDbContext _dbContext;
         
-        public AuthorRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public BookRepository(ApplicationDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }
 
-        //TODO: IMPLEMENT ADD BOOK FUNCTIONALITIES
-        public async Task AddBook(BookAuthor entity)
+        public async Task AddAuthor(BookAuthor entity)
         {
             await _dbContext.BookAuthors.AddAsync(entity);
-            await _dbContext.SaveChangesAsync();    
+            await _dbContext.SaveChangesAsync(); 
         }
 
-        public async Task AddBooks(List<BookAuthor> entities)
+        public async Task AddAuthors(List<BookAuthor> entities)
         {
             await _dbContext.AddRangeAsync(entities);
             await _dbContext.SaveChangesAsync();

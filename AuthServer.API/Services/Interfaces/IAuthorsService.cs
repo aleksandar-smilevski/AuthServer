@@ -11,7 +11,7 @@ namespace AuthServer.API.Services.Interfaces
     {
         Task<ResponseObject<List<Author>>> GetAll();
                 
-        ResponseObject<IQueryable<Author>> GetAsQueryable();
+        Task<ResponseObject<List<Author>>> SearchByName(string name);
  
         Task<ResponseObject<Author>> GetById(Guid id);
  
@@ -21,8 +21,8 @@ namespace AuthServer.API.Services.Interfaces
  
         Task<ResponseObject<bool>> Delete(Guid id);
 
-        Task<ResponseObject<bool>> AddBook(Book entity);
+        Task<ResponseObject<bool>> AddBook(Guid authorId, Guid bookId);
 
-        Task<ResponseObject<bool>> AddBooks(Book entity);
+        Task<ResponseObject<bool>> AddBooks(Guid authorId, List<Guid> entities);
     }
 }

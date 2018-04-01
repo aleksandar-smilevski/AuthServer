@@ -7,17 +7,19 @@ using AuthServer.API.Models;
 using AuthServer.API.Repositories.Author;
 using AuthServer.API.Repositories.BaseRepository;
 using AuthServer.API.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthServer.API.Services
 {
     public class AuthorsService : IAuthorsService
     {
-        private readonly IBaseRepository<Author, Guid> _authorRepository;
-        private readonly IAuthorRepository _authorRepository1;
+        private readonly AuthorRepository _authorRepository;
+        private readonly IBaseRepository<Book, Guid> _bookRepository;
 
-        public AuthorsService(IBaseRepository<Author, Guid> authorRepository)
+        public AuthorsService(AuthorRepository authorRepository, IBaseRepository<Book, Guid> bookRepository)
         {
             _authorRepository = authorRepository;
+            _bookRepository = bookRepository;
         }
         
         public async Task<ResponseObject<List<Author>>> GetAll()
@@ -43,21 +45,23 @@ namespace AuthServer.API.Services
             }
         }
 
-        public ResponseObject<IQueryable<Author>> GetAsQueryable()
+        public async Task<ResponseObject<List<Author>>> SearchByName(string name)
         {
+            var response = new ResponseObject<List<Author>> {Data = new List<Author>()};
+
             try
             {
-                var response = new ResponseObject<IQueryable<Author>>
-                {
-                    Data = _authorRepository.GetAsQueryable(),
-                    ResponseType = ResponseType.Success,
-                    Error = String.Empty
-                };
+                var queryable = _authorRepository.GetAsQueryable();
+
+                var authors = await queryable.Where(x => x.FirstName.Contains(name) || x.LastName.Contains(name)).ToListAsync();
+
+                response.ResponseType = ResponseType.Success;
+                response.Data = authors;
                 return response;
             }
             catch (Exception e)
             {
-                return new ResponseObject<IQueryable<Author>>
+                return new ResponseObject<List<Author>>
                 {
                     Data = null,
                     ResponseType = ResponseType.Error,
@@ -77,6 +81,7 @@ namespace AuthServer.API.Services
                 if (author == null)
                 {
                     response.ResponseType = ResponseType.NoDataFound;
+                    response.Error = $"Cannot find {typeof(Author).Name} entity with ID: {id}";
                     return response;
                 }
 
@@ -139,7 +144,7 @@ namespace AuthServer.API.Services
                 
                 response.Data = true;
                 response.ResponseType = ResponseType.Success;
-                return response;_
+                return response;
             }
             catch (Exception e)
             {
@@ -148,16 +153,95 @@ namespace AuthServer.API.Services
                 return response;
             }
         }
-        
-        //TODO: IMPLEMENT ADD BOOK FUNCTIONALITIES
-        public Task<ResponseObject<bool>> AddBook(Book entity)
+
+        public async Task<ResponseObject<bool>> AddBook(Guid authorId, Guid bookId)
         {
-            throw new NotImplementedException();
+            var response = new ResponseObject<bool> {Data = false};
+            try
+            {
+                var book = await _bookRepository.GetById(bookId);
+
+                if (book == null)
+                {
+                    response.ResponseType = ResponseType.NoDataFound;
+                    response.Error = $"Cannot find {typeof(Book).Name} entity with ID: {bookId}";
+                    return response;
+                }
+
+                var author = await _authorRepository.GetById(authorId);
+
+                if (author == null)
+                {
+                    response.ResponseType = ResponseType.NoDataFound;
+                    response.Error = $"Cannot find {typeof(Author).Name} entity with ID: {authorId}";
+                    return response;
+                }
+
+                var newEntry = new BookAuthor
+                {
+                    AuthorId = authorId,
+                    BookId = book.Id
+                };
+
+                await _authorRepository.AddBook(newEntry);
+                response.ResponseType = ResponseType.Success;
+                return response;
+            }
+            catch (Exception e)
+            {
+                response.ResponseType = ResponseType.Error;
+                response.Error = e.Message;
+                return response;
+            }
         }
 
-        public Task<ResponseObject<bool>> AddBooks(Book entity)
+        public async Task<ResponseObject<bool>> AddBooks(Guid authorId, List<Guid> entities)
         {
-            throw new NotImplementedException();
+            var response = new ResponseObject<bool> {Data = false};
+            try
+            {
+                var author = await _authorRepository.GetById(authorId);
+
+                if (author == null)
+                {
+                    response.ResponseType = ResponseType.NoDataFound;
+                    response.Error = $"Cannot find {typeof(Author).Name} entity with ID: {authorId}";
+                    return response;
+                }
+                
+                var newEntitiesList = new List<BookAuthor>();
+                
+                foreach (var entityId in entities)
+                {
+                    var book = await _bookRepository.GetById(entityId);
+
+                    if (book == null)
+                    {
+                        response.ResponseType = ResponseType.NoDataFound;
+                        response.Error = $"Cannot find {typeof(Book).Name} entity with ID: {entityId}";
+                        return response;
+                    }
+
+                    var newEntity = new BookAuthor
+                    {
+                        AuthorId = authorId,
+                        BookId = book.Id
+                    };
+                    
+                    newEntitiesList.Add(newEntity);
+                }
+
+                await _authorRepository.AddBooks(newEntitiesList);
+                response.Data = true;
+                response.ResponseType = ResponseType.Success;
+                return response;
+            }
+            catch (Exception e)
+            {
+                response.ResponseType = ResponseType.Error;
+                response.Error = e.Message;
+                return response;
+            }
         }
     }
 }

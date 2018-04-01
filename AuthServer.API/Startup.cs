@@ -2,6 +2,7 @@
 using AuthServer.API.Repositories;
 using AuthServer.API.Repositories.Author;
 using AuthServer.API.Repositories.BaseRepository;
+using AuthServer.API.Repositories.Book;
 using AuthServer.API.Services;
 using AuthServer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +32,8 @@ namespace AuthServer.API
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
-            services.AddScoped<IAuthorRepository,AuthorRepository>();
+            services.AddScoped<AuthorRepository>();
+            services.AddScoped<BookRepository>();
             services.AddScoped<IAuthorsService, AuthorsService>();
             
             services.AddSwaggerGen(c =>

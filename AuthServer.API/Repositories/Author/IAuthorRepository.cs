@@ -7,7 +7,7 @@ namespace AuthServer.API.Repositories.Author
 {
     public interface IAuthorRepository
     {
-        Task AddBook(Book entity);
-        Task AddBooks(List<Guid> books);
+        Task AddBook(BookAuthor entity);
+        Task AddBooks(List<BookAuthor> entities);
     }
 }

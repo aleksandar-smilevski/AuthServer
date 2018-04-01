@@ -57,12 +57,66 @@ namespace AuthServer.API.Controllers
             }
         }
         
+        [HttpGet("search/{name}")]
+        public async Task<ResponseObject<List<Author>>> SearchByName(string name)
+        {
+            try
+            {
+                return await _authorsService.SearchByName(name);
+            }
+            catch (Exception e)
+            {
+                return new ResponseObject<List<Author>>
+                {
+                    Data = null,
+                    Error = e.Message,
+                    ResponseType = ResponseType.Error
+                };
+            }
+        }
+        
         [HttpPost]
         public async Task<ResponseObject<bool>> Create(Author entity)
         {
             try
             {
                 return await _authorsService.Create(entity);
+            }
+            catch (Exception e)
+            {
+                return new ResponseObject<bool>
+                {
+                    Data = false,
+                    Error = e.Message,
+                    ResponseType = ResponseType.Error
+                };
+            }
+        }
+        
+        [HttpPost("addBook")]
+        public async Task<ResponseObject<bool>> AddBook(Guid authorId, Guid bookId)
+        {
+            try
+            {
+                return await _authorsService.AddBook(authorId, bookId);
+            }
+            catch (Exception e)
+            {
+                return new ResponseObject<bool>
+                {
+                    Data = false,
+                    Error = e.Message,
+                    ResponseType = ResponseType.Error
+                };
+            }
+        }
+        
+        [HttpPost("addBooks")]
+        public async Task<ResponseObject<bool>> AddBooks(Guid authorId, List<Guid> bookIds)
+        {
+            try
+            {
+                return await _authorsService.AddBooks(authorId, bookIds);
             }
             catch (Exception e)
             {
