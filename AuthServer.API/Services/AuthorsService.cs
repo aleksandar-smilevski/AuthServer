@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthServer.API.Dto;
 using AuthServer.API.Helpers;
 using AuthServer.API.Models;
 using AuthServer.API.Repositories.Author;
 using AuthServer.API.Repositories.BaseRepository;
 using AuthServer.API.Services.Interfaces;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthServer.API.Services
@@ -45,23 +47,26 @@ namespace AuthServer.API.Services
             }
         }
 
-        public async Task<ResponseObject<List<Author>>> SearchByName(string name)
+        public async Task<ResponseObject<List<AuthorDto>>> SearchByName(string name)
         {
-            var response = new ResponseObject<List<Author>> {Data = new List<Author>()};
+            var response = new ResponseObject<List<AuthorDto>> {Data = new List<AuthorDto>()};
 
             try
             {
                 var queryable = _authorRepository.GetAsQueryable();
 
-                var authors = await queryable.Where(x => x.FirstName.Contains(name) || x.LastName.Contains(name)).ToListAsync();
+                var authors = await queryable.Include(x => x.Books).ThenInclude(x => x.Book)
+                    .Where(x => x.FirstName.Contains(name) || x.LastName.Contains(name)).FirstOrDefaultAsync();
+
+                var authorsDto = Mapper.Map<Author, AuthorDto>(authors);
 
                 response.ResponseType = ResponseType.Success;
-                response.Data = authors;
+                response.Data = new List<AuthorDto> {authorsDto};
                 return response;
             }
             catch (Exception e)
             {
-                return new ResponseObject<List<Author>>
+                return new ResponseObject<List<AuthorDto>>
                 {
                     Data = null,
                     ResponseType = ResponseType.Error,

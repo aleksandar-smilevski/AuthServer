@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MzNavbarModule, MzSidenavModule } from 'ng2-materialize';
+import { MzNavbarModule, MzSidenavModule, MzCardModule, MzSpinnerModule } from 'ng2-materialize';
 
 //Components
 import { ProtectedComponent } from './components/protected/protected.component';
@@ -16,6 +16,8 @@ import { AuthService } from './authentication/authService';
 import { AuthCallback } from './components/auth-callback/auth-callback.component';
 import { AppComponent } from './components/app/app.component';
 import { HomeComponent } from "./components/home/home.component";
+import {AllAuthorsComponent} from "./components/author/allAuthors.component";
+
 
 const routes: Routes = [
     
@@ -29,6 +31,10 @@ const routes: Routes = [
         component: HomeComponent
     },
     {
+        path: 'authors',
+        component: AllAuthorsComponent
+    },
+    {
         path: 'auth-callback',
         component: AuthCallback
     }
@@ -39,7 +45,8 @@ const routes: Routes = [
         AuthCallback,
         AppComponent,
         HomeComponent,
-        ProtectedComponent
+        ProtectedComponent,
+        AllAuthorsComponent
     ],
     imports: [
         CommonModule,
@@ -48,7 +55,9 @@ const routes: Routes = [
         BrowserAnimationsModule,
         RouterModule.forRoot(routes),
         MzSidenavModule,
-        MzNavbarModule
+        MzNavbarModule,
+        MzCardModule,
+        MzSpinnerModule
     ],
     providers: [
         AuthGuardService,

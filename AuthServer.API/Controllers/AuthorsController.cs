@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthServer.API.Dto;
 using AuthServer.API.Helpers;
 using AuthServer.API.Models;
 using AuthServer.API.Repositories;
@@ -58,7 +59,7 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpGet("search/{name}")]
-        public async Task<ResponseObject<List<Author>>> SearchByName(string name)
+        public async Task<ResponseObject<List<AuthorDto>>> SearchByName(string name)
         {
             try
             {
@@ -66,7 +67,7 @@ namespace AuthServer.API.Controllers
             }
             catch (Exception e)
             {
-                return new ResponseObject<List<Author>>
+                return new ResponseObject<List<AuthorDto>>    
                 {
                     Data = null,
                     Error = e.Message,

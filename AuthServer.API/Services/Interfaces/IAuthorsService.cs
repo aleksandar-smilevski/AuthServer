@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using AuthServer.API.Dto;
 using AuthServer.API.Helpers;
 using AuthServer.API.Models;
 
@@ -11,7 +11,7 @@ namespace AuthServer.API.Services.Interfaces
     {
         Task<ResponseObject<List<Author>>> GetAll();
                 
-        Task<ResponseObject<List<Author>>> SearchByName(string name);
+        Task<ResponseObject<List<AuthorDto>>> SearchByName(string name);
  
         Task<ResponseObject<Author>> GetById(Guid id);
  
