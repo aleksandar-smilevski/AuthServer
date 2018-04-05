@@ -8,12 +8,14 @@
                 </a>
                 <mz-navbar-item-container [align]="'right'">
                     <mz-navbar-item><a routerLink="/home">Home</a></mz-navbar-item>
+                    <mz-navbar-item><a routerLink="/books">Books</a></mz-navbar-item>
+                    <mz-navbar-item><a routerLink="/authors">Authors</a></mz-navbar-item>
                     <mz-navbar-item><a routerLink="/protected">Protected</a></mz-navbar-item>
                 </mz-navbar-item-container>
             </mz-navbar>
             <mz-sidenav
                 [id]="'sidenav-demo'"
-                [collapseButtonId]="'btn-sidenav-demo'">
+                [collapseButtonId]="'btn-sidenav-demo'" >
                 <mz-sidenav-header>
                     Sidenav header
                 </mz-sidenav-header>
@@ -32,6 +34,20 @@
             </mz-sidenav>
             
         </nav>
-        <router-outlet></router-outlet>
+        <div class="container">
+            <div class="row">
+                <div class="col s3">
+                    <mz-collection>
+                        <mz-collection-item>Collection item 1</mz-collection-item>
+                        <mz-collection-item>Collection item 2</mz-collection-item>
+                        <mz-collection-item>Collection item 3</mz-collection-item>
+                        <mz-collection-item>Collection item 4</mz-collection-item>
+                    </mz-collection>
+                </div>
+                <div class="col s9">
+                    <router-outlet></router-outlet>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

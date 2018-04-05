@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col s12">
+        <mz-card [hoverable]="false">
+            <mz-card-title>
+                All Authors
+            </mz-card-title>
+        </mz-card>ª
+    </div>
+    <div class="col s12">
+        <mz-card [hoverable]="false">
+            <mz-card-content>
+                <div class="input-field">
+                </div>
+            </mz-card-content>
+        </mz-card>
+    </div>
+    <div class="col s12 offset-s4">
+        <mz-spinner [hidden]="authorsLoaded"
+                    [color]="'blue'"
+                    [size]="'big'">
+        </mz-spinner>
+    </div>
+    <div *ngFor="let author of allAuthors" class="col s12 m6 l3">
+        <mz-card [hoverable]="true" (click)="click($event, author.id)" style="cursor: pointer">
+            <mz-card-content>
+                <p class="center-align">{{ author.firstName }} {{ author.lastName }}</p>
+            </mz-card-content>
+        </mz-card>
+    </div>
+</div>
