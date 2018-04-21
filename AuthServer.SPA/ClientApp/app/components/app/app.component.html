@@ -1,44 +1,46 @@
 <div class='container-fluid'>
     <div class='row'>
-        <nav>
-            <mz-navbar>
-                <a href="#" class="brand-logo">AuthServer.SPA</a>
-                <a href="#" class="hide-on-large-only" id="btn-sidenav-demo">
-                    <i class="material-icons">menu</i>
-                </a>
-                <mz-navbar-item-container [align]="'right'">
-                    <mz-navbar-item><a routerLink="/home">Home</a></mz-navbar-item>
-                    <mz-navbar-item><a routerLink="/books">Books</a></mz-navbar-item>
-                    <mz-navbar-item><a routerLink="/authors">Authors</a></mz-navbar-item>
-                    <mz-navbar-item><a routerLink="/protected">Protected</a></mz-navbar-item>
-                </mz-navbar-item-container>
-            </mz-navbar>
-            <mz-sidenav
-                [id]="'sidenav-demo'"
-                [collapseButtonId]="'btn-sidenav-demo'" >
-                <mz-sidenav-header>
-                    Sidenav header
-                </mz-sidenav-header>
-                <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
-                <mz-sidenav-link>
-                    <a href="#">First Link</a>
-                </mz-sidenav-link>
-                <mz-sidenav-divider></mz-sidenav-divider>
-                <mz-sidenav-link [active]="true">
-                    <a href="#">Active Link</a>
-                </mz-sidenav-link>
-                <mz-sidenav-divider></mz-sidenav-divider>
-                <mz-sidenav-link>
-                    <a href="#" class="waves-effect">Second Link With Waves</a>
-                </mz-sidenav-link>
-            </mz-sidenav>
-            
-        </nav>
+            <div>
+                <mz-navbar> 
+                    <div class="container">
+                        <a href="#" class="brand-logo">AuthServer.SPA</a>
+                        <a href="#" class="hide-on-large-only" id="btn-sidenav-demo">
+                            <i class="material-icons">menu</i>
+                        </a>
+                        <mz-navbar-item-container [align]="'right'">
+                            <mz-navbar-item><a routerLink="/home">Home</a></mz-navbar-item>
+                            <mz-navbar-item><a routerLink="/books">Books</a></mz-navbar-item>
+                            <mz-navbar-item><a routerLink="/authors">Authors</a></mz-navbar-item>
+                            <mz-navbar-item><a routerLink="/cart"><i class="mdi mdi-cart" style="display: inline; font-size: 20px"></i>{{(shoppingCartItems$ | async).length}}</a></mz-navbar-item>
+                        </mz-navbar-item-container>
+                    </div>
+                </mz-navbar>
+                <mz-sidenav
+                        [id]="'sidenav-demo'"
+                        [collapseButtonId]="'btn-sidenav-demo'" >
+                    <mz-sidenav-header>
+                        Sidenav header
+                    </mz-sidenav-header>
+                    <mz-sidenav-subheader>Link Subheader</mz-sidenav-subheader>
+                    <mz-sidenav-link>
+                        <a href="#">First Link</a>
+                    </mz-sidenav-link>
+                    <mz-sidenav-divider></mz-sidenav-divider>
+                    <mz-sidenav-link [active]="true">
+                        <a href="#">Active Link</a>
+                    </mz-sidenav-link>
+                    <mz-sidenav-divider></mz-sidenav-divider>
+                    <mz-sidenav-link>
+                        <a href="#" class="waves-effect">Second Link With Waves</a>
+                    </mz-sidenav-link>
+                </mz-sidenav>
+            </div>  
+        
         <div class="container">
             <div class="row">
                 <div class="col s3">
                     <mz-collection>
-                        <mz-collection-item>Collection item 1</mz-collection-item>
+                        <mz-collection-item (click)="addToCart({ id: 1, title: 'some title', description: 'some description'})">Collection item 1</mz-collection-item>
                         <mz-collection-item>Collection item 2</mz-collection-item>
                         <mz-collection-item>Collection item 3</mz-collection-item>
                         <mz-collection-item>Collection item 4</mz-collection-item>

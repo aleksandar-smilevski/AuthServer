@@ -17,14 +17,16 @@ import { AuthCallback } from './components/auth-callback/auth-callback.component
 import { AppComponent } from './components/app/app.component';
 import { HomeComponent } from "./components/home/home.component";
 import {AllAuthorsComponent} from "./components/author/allAuthors/allAuthors.component";
+import {CartService} from "./components/cart/cart.service";
+import {CartItemsComponent} from "./components/cartItems/cartItems.component";
 
 
 const routes: Routes = [
     
     {
-        path: 'protected',
-        canActivate: [AuthGuardService],
-        component: ProtectedComponent
+        path: 'cart',
+        // canActivate: [AuthGuardService],
+        component: CartItemsComponent
     },
     {
         path: 'home',
@@ -46,7 +48,8 @@ const routes: Routes = [
         AppComponent,
         HomeComponent,
         ProtectedComponent,
-        AllAuthorsComponent
+        AllAuthorsComponent,
+        CartItemsComponent
     ],
     imports: [
         CommonModule,
@@ -62,7 +65,8 @@ const routes: Routes = [
     ],
     providers: [
         AuthGuardService,
-        AuthService
+        AuthService,
+        CartService
     ]
 })
 export class AppModuleShared {
