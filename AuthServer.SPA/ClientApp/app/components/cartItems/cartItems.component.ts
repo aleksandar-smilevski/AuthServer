@@ -7,7 +7,7 @@ import {CartService} from "../cart/cart.service";
     selector: 'cart-items',
     templateUrl: './cartItems.component.html'
 })
-export class CartItemsComponent implements OnInit {
+export class CartItemsComponent {
     
     public shoppingCartItems$: Observable<Book[]>;
     public shoppingCartItems: Book[]  = [];
@@ -19,8 +19,5 @@ export class CartItemsComponent implements OnInit {
 
         this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems =  _);
     }
-
-    ngOnInit(): void {
-        console.log(this.shoppingCartItems);
-    }
+    
 }
