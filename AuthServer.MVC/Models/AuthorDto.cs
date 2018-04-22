@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AuthServer.API.Dto
+namespace AuthServer.MVC.Models
 {
     public class AuthorDto
     {

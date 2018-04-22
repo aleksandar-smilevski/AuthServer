@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AuthServer.API.Dto
+namespace AuthServer.MVC.Models
 {
     public class BookPreviewDto
     {

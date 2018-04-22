@@ -6,6 +6,7 @@ using AuthServer.API.Dto;
 using AuthServer.API.Helpers;
 using AuthServer.API.Models;
 using AuthServer.API.Repositories;
+using AuthServer.API.Repositories.Author;
 using AuthServer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,23 +16,23 @@ namespace AuthServer.API.Controllers
     public class AuthorsController : Controller
     {
         
-        private readonly IAuthorsService _authorsService;
+        private readonly IAuthorRepository _authorsRepository;
 
-        public AuthorsController(IAuthorsService authorsService)
+        public AuthorsController(IAuthorRepository authorsRepository)
         {
-            _authorsService = authorsService;
+            _authorsRepository = authorsRepository;
         }
 
         [HttpGet]
-        public async Task<ResponseObject<List<Author>>> GetAll()
+        public async Task<ResponseObject<List<AuthorDto>>> GetAll()
         {
             try
             {
-                return await _authorsService.GetAll();
+                return await _authorsRepository.GetAll();
             }
             catch (Exception e)
             {
-                return new ResponseObject<List<Author>>
+                return new ResponseObject<List<AuthorDto>>
                 {
                     Data = null,
                     Error = e.Message,
@@ -41,15 +42,15 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpGet("{id}")]
-        public async Task<ResponseObject<Author>> GetById(Guid id)
+        public async Task<ResponseObject<AuthorDto>> GetById(Guid id)
         {
             try
             {
-                return await _authorsService.GetById(id);
+                return await _authorsRepository.GetById(id);
             }
             catch (Exception e)
             {
-                return new ResponseObject<Author>
+                return new ResponseObject<AuthorDto>
                 {
                     Data = null,
                     Error = e.Message,
@@ -63,7 +64,7 @@ namespace AuthServer.API.Controllers
         {
             try
             {
-                return await _authorsService.SearchByName(name);
+                return await _authorsRepository.SearchByName(name);
             }
             catch (Exception e)
             {
@@ -77,11 +78,12 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpPost]
-        public async Task<ResponseObject<bool>> Create(Author entity)
+        public async Task<ResponseObject<bool>> Create([FromBody] AuthorDto entity)
         {
             try
             {
-                return await _authorsService.Create(entity);
+                if (!ModelState.IsValid) throw new Exception(ModelState.Values.ToString());
+                return await _authorsRepository.Create(entity);
             }
             catch (Exception e)
             {
@@ -94,48 +96,48 @@ namespace AuthServer.API.Controllers
             }
         }
         
-        [HttpPost("addBook")]
-        public async Task<ResponseObject<bool>> AddBook(Guid authorId, Guid bookId)
-        {
-            try
-            {
-                return await _authorsService.AddBook(authorId, bookId);
-            }
-            catch (Exception e)
-            {
-                return new ResponseObject<bool>
-                {
-                    Data = false,
-                    Error = e.Message,
-                    ResponseType = ResponseType.Error
-                };
-            }
-        }
-        
-        [HttpPost("addBooks")]
-        public async Task<ResponseObject<bool>> AddBooks(Guid authorId, List<Guid> bookIds)
-        {
-            try
-            {
-                return await _authorsService.AddBooks(authorId, bookIds);
-            }
-            catch (Exception e)
-            {
-                return new ResponseObject<bool>
-                {
-                    Data = false,
-                    Error = e.Message,
-                    ResponseType = ResponseType.Error
-                };
-            }
-        }
+//        [HttpPost("addBook")]
+//        public async Task<ResponseObject<bool>> AddBook(Guid authorId, Guid bookId)
+//        {
+//            try
+//            {
+//                return await _authorsRepository.AddBook(authorId, bookId);
+//            }
+//            catch (Exception e)
+//            {
+//                return new ResponseObject<bool>
+//                {
+//                    Data = false,
+//                    Error = e.Message,
+//                    ResponseType = ResponseType.Error
+//                };
+//            }
+//        }
+//        
+//        [HttpPost("addBooks")]
+//        public async Task<ResponseObject<bool>> AddBooks(Guid authorId, List<Guid> bookIds)
+//        {
+//            try
+//            {
+//                return await _authorsService.AddBooks(authorId, bookIds);
+//            }
+//            catch (Exception e)
+//            {
+//                return new ResponseObject<bool>
+//                {
+//                    Data = false,
+//                    Error = e.Message,
+//                    ResponseType = ResponseType.Error
+//                };
+//            }
+//        }
         
         [HttpPost("update")]
-        public async Task<ResponseObject<bool>> Update(Guid id, Author entity)
+        public async Task<ResponseObject<bool>> Update(AuthorDto entity)
         {
             try
             {
-                return await _authorsService.Update(id, entity);
+                return await _authorsRepository.Update(entity);
             }
             catch (Exception e)
             {
@@ -153,7 +155,7 @@ namespace AuthServer.API.Controllers
         {
             try
             {
-                return await _authorsService.Delete(id);
+                return await _authorsRepository.Delete(id);
             }
             catch (Exception e)
             {

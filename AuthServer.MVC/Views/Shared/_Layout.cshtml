@@ -20,10 +20,11 @@
 <body>
 
     @{
-        var activeRoute = ViewContext.RouteData.Values["action"]; 
+        var activeRoute = ViewContext.RouteData.Values["action"];
+        var controllerRoute = ViewContext.RouteData.Values["controller"];
     }
-<nav>
-    <div class="nav-wrapper cyan darken-4">
+<nav class="cyan darken-4">
+    <div class="nav-wrapper container">
         <a asp-area="" asp-controller="Home" asp-action="Index" class="brand-logo">AuthServer.MVC</a>
         <a asp-area="" asp-controller="Home" asp-action="Index" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
         <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -38,14 +39,32 @@
         </ul>
     </div>
 </nav>
-    <div>
-        @RenderBody()
+<div>
+    <div class="container">
+        <div class="row">
+            <div class="col s3">
+                <blockquote style="border-left: 5px solid #006064">
+                    Quick links
+                </blockquote>
+                <div class="collection">
+                    <a asp-action="Index" asp-controller="Author" class="collection-item @(controllerRoute.ToString() == "Author" ? "active" : "")">Authors</a>
+                    <a href="#!" class="collection-item">Books</a>
+                    <a href="#!" class="collection-item">New Author</a>
+                    <a href="#!" class="collection-item">New Book</a>
+                </div>
+            </div>
+            <div class="col s9">
+                @RenderBody()
+            </div>
+        </div>
         
-        <footer class="footer">
-            <hr />
-            <p>&copy; @DateTime.Now.Year - AuthServer.MVC</p>
-        </footer>
     </div>
+
+    <footer class="footer">
+        <hr/>
+        <p>&copy; @DateTime.Now.Year - AuthServer.MVC</p>
+    </footer>
+</div>
 
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>

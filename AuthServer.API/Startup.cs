@@ -35,10 +35,8 @@ namespace AuthServer.API
             services.AddDbContext<ApplicationDbContext>(opts =>
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             
-            services.AddScoped(typeof(IBaseRepository<,>), typeof(BaseRepository<,>));
-            services.AddScoped<AuthorRepository>();
-            services.AddScoped<BookRepository>();
-            services.AddScoped<IAuthorsService, AuthorsService>();
+           
+            services.AddScoped<IAuthorRepository,AuthorRepository>();
             
             services.AddSwaggerGen(c =>
             {
@@ -52,6 +50,8 @@ namespace AuthServer.API
                 cfg.CreateMap<Author, AuthorDto>()
                     .ForMember(x => x.Books, opt => opt.MapFrom(src => src.Books.Select(x => x.Book).ToList()));
                 cfg.CreateMap<Book, BookPreviewDto>();
+                cfg.CreateMap<AuthorDto, Author>().ForMember(x => x.Books, opt => opt.Ignore());
+                cfg.CreateMap<BookPreviewDto, Book>().ForMember(x => x.Authors, opt => opt.Ignore());
 //                cfg.CreateMap<Book, BookDto>();
             });
             

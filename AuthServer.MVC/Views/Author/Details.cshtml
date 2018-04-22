@@ -1,0 +1,47 @@
+﻿@model AuthorDto
+
+@{
+    ViewData["Title"] = "All authors";
+}
+
+@functions
+{
+
+    private string GetFullName()
+    {
+        return  $"{Model.FirstName} {Model.LastName}";
+    }
+
+}
+
+
+<h4>Showing details for: @GetFullName()</h4>
+
+<h6>Books authored by: @GetFullName()</h6>
+
+<table class="centered striped">
+    <thead>
+    <tr>
+        <th>ISBN</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Date Published</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var book in Model.Books)
+    {
+        <tr>
+            <td>@book.ISBN</td>
+            <td>@book.Title</td>
+            <td>@book.Description</td>
+            <td>@book.DatePublished.ToShortDateString()</td>
+            <td>
+                <a asp-action="Edit" asp-controller="Book" asp-route-id="@book.Id">Edit</a>
+                <a class="red-text" asp-action="Delete" asp-controller="Book" asp-route-id="@book.Id">Delete</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

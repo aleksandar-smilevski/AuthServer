@@ -1,21 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthServer.API.Helpers;
 
 namespace AuthServer.API.Repositories.BaseRepository
 {
-    public interface IBaseRepository<TEntity, TKey> where TEntity : class
+    public interface IBaseRepository
     {
-        Task<List<TEntity>> GetAll();
+        Task<ResponseObject<List<T>>> GetAll<T>();
         
-        IQueryable<TEntity> GetAsQueryable();
+        ResponseObject<IQueryable<T>> GetAsQueryable<T>();
  
-        Task<TEntity> GetById(TKey id);
+        ResponseObject<Task<T>> GetById<T>(Guid id);
+
+        Task<ResponseObject<List<T>>> SearchByName<T>(string name); 
+            
+        Task<ResponseObject<bool>> Create<T>(T entity);
  
-        Task Create(TEntity entity);
+        Task<ResponseObject<bool>>  Update<T>(Guid id, T entity);
  
-        Task Update(TKey id, TEntity entity);
- 
-        Task Delete(TKey id);
+        Task<ResponseObject<bool>>  Delete<T>(Guid id);
+    }
+    
+    public interface IMyInterface2
+    {
+        T My<T>();
     }
 }

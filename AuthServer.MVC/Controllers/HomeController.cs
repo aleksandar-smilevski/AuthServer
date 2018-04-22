@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AuthServer.MVC.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()

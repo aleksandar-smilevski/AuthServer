@@ -1,0 +1,30 @@
+﻿@model List<AuthorDto>
+
+@{
+    ViewData["Title"] = "All authors";
+}
+
+
+<h4>All Authors</h4>
+<table class="centered striped">
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var author in Model)
+    {
+        <tr>
+            <td>@author.FirstName</td>
+            <td>@author.LastName</td>
+            <td><a asp-action="Details" asp-route-id="@author.Id">More</a></td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+
