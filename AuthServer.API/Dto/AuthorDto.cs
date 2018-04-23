@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace AuthServer.API.Dto
 {
     public class AuthorDto
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]

@@ -7,7 +7,6 @@ using AuthServer.API.Dto;
 using AuthServer.API.Helpers;
 using AuthServer.API.Models;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthServer.API.Repositories.Author
@@ -57,7 +56,7 @@ namespace AuthServer.API.Repositories.Author
                 if (author == null)
                 {
                     response.ResponseType = ResponseType.NoDataFound;
-                    response.Error = string.Format(Resources.Not_Found, nameof(Author), id);
+                    response.Error = $"Entity not found: Key used: {id}";
                     return response;
                 }
 
@@ -88,7 +87,7 @@ namespace AuthServer.API.Repositories.Author
 
                 if (!authors.Any())
                 {
-                    response.Error = string.Format(Resources.Not_Found, nameof(Author), name);
+                    response.Error = $"Entity not found. Key used: {name}";
                     response.ResponseType = ResponseType.NoDataFound;
                 }
 
@@ -110,22 +109,23 @@ namespace AuthServer.API.Repositories.Author
         {
             var response = new ResponseObject<bool>{Data = false};
 
-            try
+            using (var transaction = await _dbContext.Database.BeginTransactionAsync())
             {
-                using (var transaction = await _dbContext.Database.BeginTransactionAsync())
+                try
                 {
                     var author = Mapper.Map<Models.Author>(authorDto);
                     await _dbContext.Authors.AddAsync(author);
                     await _dbContext.SaveChangesAsync();
-                    
+
                     foreach (var bookDto in authorDto.Books)
                     {
                         Models.Book newBook;
                         BookAuthor newJoinEntity;
-                        
-                        if (bookDto.Id != null)
+
+                        if (bookDto.Id != Guid.Empty)
                         {
-                            var book = await _dbContext.Books.Where(x => x.Id.ToString() == bookDto.Id).FirstOrDefaultAsync();
+                            var book = await _dbContext.Books.Where(x => x.Id == bookDto.Id)
+                                .FirstOrDefaultAsync();
                             if (book != null)
                             {
                                 var joinEntity = new BookAuthor
@@ -136,7 +136,7 @@ namespace AuthServer.API.Repositories.Author
                                 await _dbContext.BookAuthors.AddAsync(joinEntity);
                                 continue;
                             }
-                            
+
                             newBook = Mapper.Map<Models.Book>(bookDto);
                             await _dbContext.Books.AddAsync(newBook);
 
@@ -160,26 +160,113 @@ namespace AuthServer.API.Repositories.Author
 
                         await _dbContext.BookAuthors.AddAsync(newJoinEntity);
                     }
-                    
+
                     await _dbContext.SaveChangesAsync();
                     transaction.Commit();
+                    response.Data = true;
+                    response.ResponseType = ResponseType.Success;
+                    return response;
                 }
-
-                response.Data = true;
-                response.ResponseType = ResponseType.Success;
-                return response;
-            }
-            catch (Exception e)
-            {
-                response.Error = e.Message;
-                response.ResponseType = ResponseType.Error;
-                return response;
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    response.Error = e.Message;
+                    response.ResponseType = ResponseType.Error;
+                    return response;
+                }
             }
         }
 
-        public Task<ResponseObject<bool>> Update(AuthorDto author)
+        public async Task<ResponseObject<bool>> Update(AuthorDto entity)
         {
-            throw new NotImplementedException();
+            var response = new ResponseObject<bool>{Data = false};
+            using (var transaction = _dbContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    var author = await _dbContext.Authors.Include(x => x.Books).Where(x => x.Id == entity.Id).FirstOrDefaultAsync();
+                    if (author == null)
+                    {
+                        response.Error =  response.Error = $"Entity not found. Key used: {entity?.Id}";
+                        response.ResponseType = ResponseType.NoDataFound;
+                        return response;
+                    }
+
+                    author.FirstName = entity.FirstName;
+                    author.LastName = entity.LastName;
+                    _dbContext.Authors.Update(author);
+                    await _dbContext.SaveChangesAsync();
+
+                    #region commented UPDATE
+                    //SAKAM DA GI ZACUVAM NOVITE BOOKS CIE ID = null ili ne postoi vo baza
+                    //ZA VEKE POSTOECKITE PROVERI DALI NEKOJ OD ZACUVANITE NE E PRATEN -> toa znaci deka treba da se izbrise
+                    // SET A = { 1, 2, 3 } & B = { 5, 6 }
+                    //
+                    //TODO: TRY UPDATING OF BOOKS AS WELL
+//                    foreach (var book in author.Books)
+//                    {
+//                        if (book.BookId != null)
+//                        {
+//                            var contains = entity.Books.Any(x => Guid.Parse(x.Id) == book.BookId);
+//                            if (contains) continue;
+//                        
+//                            _dbContext.BookAuthors.Remove(book);
+//                        }
+//                    }
+//                    
+//                    await _dbContext.SaveChangesAsync();
+//                    
+//                    foreach (var bookDto in entity.Books)
+//                    {
+//                        Models.Book newBook;
+//                        BookAuthor newJoinEntity;
+//                        
+//                        if (bookDto.Id != null)
+//                        {
+//                            var book = await _dbContext.Books.Where(x => x.Id == Guid.Parse(bookDto.Id)).FirstOrDefaultAsync();
+//                            if (book == null)
+//                            {
+//                                newBook = Mapper.Map<Models.Book>(bookDto);
+//                                await _dbContext.Books.AddAsync(newBook);
+//
+//                                newJoinEntity = new BookAuthor
+//                                {
+//                                    AuthorId = author.Id,
+//                                    BookId = newBook.Id
+//                                };
+//
+//                                await _dbContext.BookAuthors.AddAsync(newJoinEntity);
+//                                continue;
+//                            }
+//                        }
+//
+//                        newBook = Mapper.Map<Models.Book>(bookDto);
+//                        await _dbContext.Books.AddAsync(newBook);
+//
+//                        newJoinEntity = new BookAuthor
+//                        {
+//                            AuthorId = author.Id,
+//                            BookId = newBook.Id
+//                        };
+//
+//                        await _dbContext.BookAuthors.AddAsync(newJoinEntity);
+//                    }
+                    //await _dbContext.SaveChangesAsync();
+                        #endregion
+                    
+                    transaction.Commit();
+                    response.Data = true;
+                    response.ResponseType = ResponseType.Success;
+                    return response;
+                }
+                catch (Exception e)
+                {
+                    transaction.Rollback();
+                    response.Error = e.Message;
+                    response.ResponseType = ResponseType.Error;
+                    return response;
+                }
+            }
         }
 
         public async Task<ResponseObject<bool>> Delete(Guid id)
@@ -193,7 +280,7 @@ namespace AuthServer.API.Repositories.Author
                 if (author == null)
                 {
                     response.ResponseType = ResponseType.Error;
-                    response.Error = string.Format(Resources.Not_Found, nameof(Author), id.ToString());
+                    response.Error = $"Entity not found. Key used: {id}";
                     return response;
                 }
 

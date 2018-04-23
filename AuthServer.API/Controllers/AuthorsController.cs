@@ -133,7 +133,7 @@ namespace AuthServer.API.Controllers
 //        }
         
         [HttpPost("update")]
-        public async Task<ResponseObject<bool>> Update(AuthorDto entity)
+        public async Task<ResponseObject<bool>> Update([FromBody] AuthorDto entity)
         {
             try
             {

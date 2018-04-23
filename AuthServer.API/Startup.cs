@@ -2,12 +2,7 @@
 using AuthServer.API.Database;
 using AuthServer.API.Dto;
 using AuthServer.API.Models;
-using AuthServer.API.Repositories;
 using AuthServer.API.Repositories.Author;
-using AuthServer.API.Repositories.BaseRepository;
-using AuthServer.API.Repositories.Book;
-using AuthServer.API.Services;
-using AuthServer.API.Services.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -79,7 +74,6 @@ namespace AuthServer.API
                 options.AllowAnyOrigin();
             });
             
-
 
             app.UseMvc();
         }
