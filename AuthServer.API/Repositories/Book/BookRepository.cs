@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AuthServer.API.Database;
+using AuthServer.API.Dto;
+using AuthServer.API.Helpers;
 using AuthServer.API.Models;
 using AuthServer.API.Repositories.BaseRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthServer.API.Repositories.Book
 {
@@ -17,46 +20,24 @@ namespace AuthServer.API.Repositories.Book
             _dbContext = dbContext;
         }
 
-        public async Task AddAuthor(BookAuthor entity)
-        {
-            await _dbContext.BookAuthors.AddAsync(entity);
-            await _dbContext.SaveChangesAsync(); 
-        }
 
-        public async Task AddAuthors(List<BookAuthor> entities)
+        public async Task<ResponseObject<List<BookTitleDto>>> GetTitles()
         {
-            await _dbContext.AddRangeAsync(entities);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public Task<List<Models.Book>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Models.Book> GetAsQueryable()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Models.Book> GetById(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Create(Models.Book entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(Guid id, Models.Book entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task Delete(Guid id)
-        {
-            throw new NotImplementedException();
+            var response = new ResponseObject<List<BookTitleDto>> { Data = new List<BookTitleDto>() };
+            try
+            {
+                var data = await _dbContext.Books.Select(x => new BookTitleDto {Id = x.Id, Title = x.Title})
+                    .ToListAsync();
+                response.ResponseType = ResponseType.Success;
+                response.Data = data;
+                return response;
+            }
+            catch (Exception e)
+            {
+                response.Error = e.Message;
+                response.ResponseType = ResponseType.Error;
+                return response;
+            }
         }
     }
 }

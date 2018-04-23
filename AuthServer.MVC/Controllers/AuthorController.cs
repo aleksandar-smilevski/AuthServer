@@ -12,6 +12,7 @@ namespace AuthServer.MVC.Controllers
     public class AuthorController : Controller
     {
         // GET
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             try
@@ -35,7 +36,8 @@ namespace AuthServer.MVC.Controllers
             
             return View();
         }
-
+        
+        [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
             try
@@ -56,6 +58,20 @@ namespace AuthServer.MVC.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Create()
+        {
+            var model = new AuthorDto();
+            return View(model);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Create(AuthorDto newAuthor)
+        {
+            var model = newAuthor;
+            return null;
         }
     }
 }

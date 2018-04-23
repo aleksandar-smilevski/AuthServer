@@ -12,5 +12,10 @@ namespace AuthServer.MVC.Models
         [Required]
         public string LastName { get; set; }
         public List<BookPreviewDto> Books { get; set; }
+
+        public AuthorDto()
+        {
+            this.Books = new List<BookPreviewDto>();
+        }
     }
 }

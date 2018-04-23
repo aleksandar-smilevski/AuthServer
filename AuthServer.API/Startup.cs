@@ -3,6 +3,7 @@ using AuthServer.API.Database;
 using AuthServer.API.Dto;
 using AuthServer.API.Models;
 using AuthServer.API.Repositories.Author;
+using AuthServer.API.Repositories.Book;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +33,7 @@ namespace AuthServer.API
             
            
             services.AddScoped<IAuthorRepository,AuthorRepository>();
+            services.AddScoped<IBookRepository, BookRepository>();
             
             services.AddSwaggerGen(c =>
             {

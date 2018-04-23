@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using AuthServer.API.Models;
+using AuthServer.API.Dto;
+using AuthServer.API.Helpers;
 
 namespace AuthServer.API.Repositories.Book
 {
-    public interface IBookRepository 
+    public interface IBookRepository
     {
-        Task AddAuthor(BookAuthor entity);
-        Task AddAuthors(List<BookAuthor> entities);
+        Task<ResponseObject<List<BookTitleDto>>> GetTitles();
     }
 }
