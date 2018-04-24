@@ -47,9 +47,9 @@
                     Quick links
                 </blockquote>
                 <div class="collection">
-                    <a asp-action="Index" asp-controller="Author" class="collection-item @(controllerRoute.ToString() == "Author" ? "active" : "")">Authors</a>
+                    <a asp-action="Index" asp-controller="Author" class="collection-item @(controllerRoute.ToString() == "Author" && activeRoute.ToString() == "Index" ? "active" : "")">Authors</a>
                     <a href="#!" class="collection-item">Books</a>
-                    <a href="#!" class="collection-item">New Author</a>
+                    <a asp-action="Create" asp-controller="Author" class="collection-item @(controllerRoute.ToString() == "Author" && activeRoute.ToString() == "Create" ? "active" : "")">New Author</a>
                     <a href="#!" class="collection-item">New Book</a>
                 </div>
             </div>
@@ -71,6 +71,8 @@
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/lib/materialize/materialize/js/materialize.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"

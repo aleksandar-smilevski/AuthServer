@@ -71,7 +71,7 @@ namespace AuthServer.MVC.Controllers
         public async Task<IActionResult> Create(AuthorDto newAuthor)
         {
             var model = newAuthor;
-            return null;
+            return View();
         }
     }
 }
