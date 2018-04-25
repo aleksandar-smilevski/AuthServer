@@ -119,9 +119,6 @@ namespace AuthServer.API.Repositories.Author
 
                     foreach (var bookDto in authorDto.Books)
                     {
-                        Models.Book newBook;
-                        BookAuthor newJoinEntity;
-
                         if (bookDto.Id != Guid.Empty)
                         {
                             var book = await _dbContext.Books.Where(x => x.Id == bookDto.Id)
@@ -137,10 +134,10 @@ namespace AuthServer.API.Repositories.Author
                                 continue;
                             }
 
-                            newBook = Mapper.Map<Models.Book>(bookDto);
+                            var newBook = Mapper.Map<Models.Book>(bookDto);
                             await _dbContext.Books.AddAsync(newBook);
 
-                            newJoinEntity = new BookAuthor
+                            var newJoinEntity = new BookAuthor
                             {
                                 AuthorId = author.Id,
                                 BookId = newBook.Id
@@ -148,17 +145,6 @@ namespace AuthServer.API.Repositories.Author
 
                             await _dbContext.BookAuthors.AddAsync(newJoinEntity);
                         }
-
-                        newBook = Mapper.Map<Models.Book>(bookDto);
-                        await _dbContext.Books.AddAsync(newBook);
-
-                        newJoinEntity = new BookAuthor
-                        {
-                            AuthorId = author.Id,
-                            BookId = newBook.Id
-                        };
-
-                        await _dbContext.BookAuthors.AddAsync(newJoinEntity);
                     }
 
                     await _dbContext.SaveChangesAsync();

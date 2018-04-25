@@ -20,7 +20,10 @@
         <tr>
             <td>@author.FirstName</td>
             <td>@author.LastName</td>
-            <td><a asp-action="Details" asp-route-id="@author.Id">More</a></td>
+            <td>
+                <a asp-action="Details" asp-route-id="@author.Id">More</a>
+                <a asp-action="Edit" asp-route-id="@author.Id">Edit</a>
+            </td>
         </tr>
     }
     </tbody>

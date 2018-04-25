@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AuthServer.API.Dto;
 using AuthServer.API.Helpers;
-using AuthServer.API.Models;
-using AuthServer.API.Repositories;
 using AuthServer.API.Repositories.Author;
-using AuthServer.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.API.Controllers
@@ -95,42 +91,6 @@ namespace AuthServer.API.Controllers
                 };
             }
         }
-        
-//        [HttpPost("addBook")]
-//        public async Task<ResponseObject<bool>> AddBook(Guid authorId, Guid bookId)
-//        {
-//            try
-//            {
-//                return await _authorsRepository.AddBook(authorId, bookId);
-//            }
-//            catch (Exception e)
-//            {
-//                return new ResponseObject<bool>
-//                {
-//                    Data = false,
-//                    Error = e.Message,
-//                    ResponseType = ResponseType.Error
-//                };
-//            }
-//        }
-//        
-//        [HttpPost("addBooks")]
-//        public async Task<ResponseObject<bool>> AddBooks(Guid authorId, List<Guid> bookIds)
-//        {
-//            try
-//            {
-//                return await _authorsService.AddBooks(authorId, bookIds);
-//            }
-//            catch (Exception e)
-//            {
-//                return new ResponseObject<bool>
-//                {
-//                    Data = false,
-//                    Error = e.Message,
-//                    ResponseType = ResponseType.Error
-//                };
-//            }
-//        }
         
         [HttpPost("update")]
         public async Task<ResponseObject<bool>> Update([FromBody] AuthorDto entity)
