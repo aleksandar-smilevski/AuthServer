@@ -26,6 +26,7 @@
         <th>Title</th>
         <th>Description</th>
         <th>Date Published</th>
+        <th>Stock</th>
         <th></th>
     </tr>
     </thead>
@@ -36,7 +37,17 @@
             <td>@book.ISBN</td>
             <td>@book.Title</td>
             <td>@book.Description</td>
-            <td>@book.DatePublished.ToShortDateString()</td>
+            <td>@if (book.DatePublished.HasValue)
+                {
+                    @book.DatePublished.Value
+                }
+            </td>
+            <td>
+                @if (book.Stock.HasValue)
+                {
+                    @book.Stock.Value
+                }
+            </td>
             <td>
                 <a asp-action="Edit" asp-controller="Book" asp-route-id="@book.Id">Edit</a>
                 <a class="red-text" asp-action="Delete" asp-controller="Book" asp-route-id="@book.Id">Delete</a>
