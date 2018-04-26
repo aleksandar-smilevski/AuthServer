@@ -97,6 +97,7 @@ namespace AuthServer.API.Controllers
         {
             try
             {
+                if (!ModelState.IsValid) throw new Exception(ModelState.Values.ToString());
                 return await _authorsRepository.Update(entity);
             }
             catch (Exception e)

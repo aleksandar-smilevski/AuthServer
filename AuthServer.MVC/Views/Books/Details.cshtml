@@ -1,11 +1,15 @@
-﻿@model List<AuthorDto>
+﻿@model BookDto
 
 @{
-    ViewData["Title"] = "All authors";
+    ViewData["Title"] = @Model.Title;
 }
 
 
-<h4>All Authors</h4>
+
+<h4>Showing details for: @Model.Title</h4>
+
+<h6>Authors of the book: </h6>
+
 <table class="centered striped">
     <thead>
     <tr>
@@ -15,19 +19,15 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var author in Model)
+    @foreach (var author in Model.Authors)
     {
         <tr>
             <td>@author.FirstName</td>
             <td>@author.LastName</td>
             <td>
-                <a asp-action="Details" asp-route-id="@author.Id">More</a><br />
-                <a asp-action="Edit" asp-route-id="@author.Id">Edit</a>
+                <a asp-action="Edit" asp-controller="Author" asp-route-id="@author.Id">Edit</a>
             </td>
         </tr>
     }
     </tbody>
 </table>
-
-
-

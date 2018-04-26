@@ -1,0 +1,33 @@
+﻿@model List<BookDto>
+
+@{
+    ViewData["Title"] = "All books";
+}
+
+
+<h4>All Books</h4>
+<table class="centered striped">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>ISBN</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var book in Model)
+    {
+        <tr>
+            <td>@book.Title</td>
+            <td>@book.ISBN</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@book.Id">More</a><br />
+                <a asp-action="Edit" asp-route-id="@book.Id">Edit</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+

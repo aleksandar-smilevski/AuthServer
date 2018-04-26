@@ -39,14 +39,24 @@
                     }
                     @foreach (var book in Model.Books)
                     {
+//                        var html = "<div class='items' id='book-" + i + "'>";
+//                        html += '<input class="isbn" type="hidden" name="Books[' + i + '].ISBN" value="'+ isbn +'" />';
+//                        html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="'+ description +'" />';
+//                        html += '<input class="datePublished" type="hidden" name="Books[' + i + '].DatePublished" value="'+ datePublished +'" />';
+//                        html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" value="'+ stock +'" />';
+//                        html += '<div class="input-field">' +
+//                                '<input type="text" class="title" name="Books[' + i + '].Title" value="' + title + '" readonly="readonly"/>' +
+//                                '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
+//                                '</div>';
+//                        html += '</div>'; 
                         <div class="items">
                             <input class="isbn" type="hidden" name="Books[@i].ISBN" value="@book.ISBN"/>
                             <input class="description" type="hidden" name="Books[@i].Description" value="@book.Description" />
                             <input class="datePublished" type="hidden" name="Books[@i].DatePublished" value="@book.DatePublished" />
                             <input class="stock" type="hidden" name="Books[@i].Stock" value="@book.Stock" />
-                            <div class="input-field">
+                            <div class="input-field suffix">
                                 <input type="text" class="title" name="Books[@i].Title" value="@book.Title" readonly="readonly"/>
-                                <i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>
+                                <i class="deleteButton material-icons prefix" style="margin-top: 10px; font-size: 18px; cursor: pointer">close</i>
                             </div>
                         </div>
                         i++;
@@ -111,3 +121,151 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        'use strict';    
+        $(document).ready(function() {
+
+            var selectedBook;
+            var bookTitles = [];
+            var bookTitlesArray = {};
+
+            $(".datepicker").pickadate({
+                selectMonths: true,
+                selectYears: 150,// Creates a dropdown to control month
+                min: new Date(1400, 0), // Creates a dropdown of 15 years to control year,
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: true
+            });
+
+            $("#authorForm").validate({
+                errorClass: 'invalid',
+                debug: true,
+                rules: {
+                    firstName: 'required',
+                    lastName: 'required'
+                },
+                messages: {
+                    firstName: 'Please insert a first name for the author',
+                    lastName: 'Please insert a last name for the author'
+                },
+                submitHandler: function(form) {
+                    // do other things for a valid form
+                    form.submit();
+                }
+            });
+
+            $("#new-book-form").validate({
+                errorClass: 'invalid',
+                rules: {
+                    title: 'required',
+                    isbn: 'required',
+                    description: 'required',
+                    stock: {
+                        required: true,
+                        min: 0,
+                        max: 45
+                    },
+                    datePublised: 'required'
+                },
+                messages: {
+                    title: 'Please insert a title',
+                    isbn: 'Please insert the ISBN of the book',
+                    description: 'Please provide a small description for the book',
+                    stock: {
+                        min: "Minimum value is 0",
+                        max: "Maximum value is 45"
+                    },
+                    datePublished: "Please choose a date of publishing"
+                },
+                submitHandler: function (form) { // for demo
+                    var title = $("#title").val();
+                    var isbn = $("#isbn").val();
+                    var description = $("#description").val();
+                    var datePublished = $("#datePublished").val();
+                    var stock = $("#stock").val();
+                    var i = $(".items").length;
+                    var html = "<div class='items' id='book-" + i + "'>";
+                    html += '<input class="isbn" type="hidden" name="Books[' + i + '].ISBN" value="'+ isbn +'" />';
+                    html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="'+ description +'" />';
+                    html += '<input class="datePublished" type="hidden" name="Books[' + i + '].DatePublished" value="'+ datePublished +'" />';
+                    html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" value="'+ stock +'" />';
+                    html += '<div class="input-field">' +
+                        '<input type="text" class="title" name="Books[' + i + '].Title" value="' + title + '" readonly="readonly"/>' +
+                        '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
+                        '</div>';
+                    html += '</div>';                 
+                    $("#item-list").append(html);
+                    refreshNames();
+                    return false;
+                }
+            });
+
+            $.get('http://localhost:5004/api/books/getTitles',
+                function(data) {
+                    var books = data.data;
+                    for (var i = 0; i < books.length; i++) {
+                        bookTitles.push(books[i]);
+                        bookTitlesArray[books[i].title] = null;
+                    }
+                    
+                    $('#autocomplete-input').autocomplete({
+                        data: bookTitlesArray,
+                        limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+                        onAutocomplete: function(val) {
+                            // Callback function when value is autcompleted.
+                            selectedBook = bookTitles.find(function(element) {
+                                return element.title === val;
+                            });
+
+                            $("#add-book").removeAttr("disabled");
+                        },
+                        minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+                    });
+                    
+                });
+
+            $("#item-list").on("click", ".deleteButton" ,function(e) {
+                var elementToDelete = $(e.target).parent().parent();
+                $(elementToDelete).remove();
+                refreshNames();
+            });
+                
+            $("#add-book").click(function(e) {
+                console.log("CLICK");
+                e.preventDefault();
+                var i = $(".items").length;
+                var html = "<div class='items' id='book-" + i + "'>";
+                html += '<input class="id" type="hidden" name="Books[' + i + '].Id" value="'+ selectedBook.id + '" />';
+//                html += '<input class="isbn" type="hidden" name="Books[' + i + '].ISBN" value="" />';
+//                html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="" />';    
+//                html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" />';
+                html += '<div class="input-field">' +
+                    '<input type="text" class="title" name="Books[' + i + '].Title" value="' + selectedBook.title + '" readonly="readonly"/>' +
+                    '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
+                    '</div>';
+                html += '</div>';                 
+                $("#item-list").append(html);
+                refreshNames();
+            });
+
+            function refreshNames() {
+                $("#item-list").find(".items").each(function(i) {
+                    $(this).find(".id").attr('name', 'Books[' + i + '].Id');
+                    $(this).find(".title").attr('name', 'Books[' + i + '].Title');
+                    $(this).find(".isbn").attr('name', 'Books[' + i + '].ISBN');
+                    $(this).find(".description").attr('name', 'Books[' + i + '].Description');                        
+                    $(this).find(".datePublished").attr('name', 'Books[' + i + '].DatePublished');
+                    $(this).find(".stock").attr('name', 'Books[' + i + '].Stock');
+                });
+            }
+            
+        });
+
+
+    </script>
+}

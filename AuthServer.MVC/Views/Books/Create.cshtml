@@ -1,27 +1,35 @@
-﻿@model AuthorDto
+﻿@model BookDto
 
 @{
-    ViewData["Title"] = "New Author";
+    ViewData["Title"] = "New Book";
 }
 
-<h4>Create new Author</h4>
-
+<h4>Create new Book</h4>
 
 <div class="row">
-    <form id="authorForm" asp-action="Create" method="post">
+    <form id="bookForm" asp-action="Create" method="post">
         <div class="col s12 m12 l9">
             <div class="card">
                 <div class="card-content">
                     <div class="card-title">
-                        Add details for the author
+                        Add details for the book
                     </div>
                     
                     <div class="row">
                         <div class="col s12 m6">
-                            <input type="text" name="firstName" placeholder="First Name" asp-for="FirstName"/>
+                            <input asp-for="Title" name="title" type="text" placeholder="Title"/>
                         </div>
                         <div class="col s12 m6">
-                            <input type="text" name="lastName" placeholder="Last Name" asp-for="LastName"/>
+                            <input asp-for="ISBN" name="isbn" placeholder="ISBN" required=""/>
+                        </div>
+                        <div class="col s12 m12">
+                            <textarea asp-for="Description" name="description" class="materialize-textarea" placeholder="Description" data-length="250"></textarea>
+                        </div>
+                        <div class="col s12 m6">
+                            <input asp-for="DatePublished" name="datePublished" id="datePublished" type="text" class="datepicker" placeholder="Date Published" value="">
+                        </div>
+                        <div class="col s12 m6">
+                            <input type="number" asp-for="Stock" name="stock" placeholder="Stock" value="0"/>
                         </div>
                         <div class="col s12 right-align">
                             <input type="submit" value="Create" class="btn btn-default"/>
@@ -33,8 +41,8 @@
         </div>
         <div class="col s12 m12 l3">
             <div class="row" >
-                <p>Books selected:</p>
-                <div class="col s12" id="item-list" asp-for="Books">
+                <p>Authors selected:</p>
+                <div class="col s12" id="item-list" asp-for="Authors">
                 </div>
             </div>
         </div>
@@ -45,16 +53,16 @@
                 <div class="row">
                     <div class="col s12">
                         <div class="card-title">
-                            Add books to this author
+                            Add authors to this book
                         </div>
                     </div>
                     <div class="input-field col s12 m12 l8">
                         <i class="material-icons prefix" style="margin-top:10px">search</i>
                         <input type="text" id="autocomplete-input" class="autocomplete" autocomplete="off">
-                        <label for="autocomplete-input">Search books</label>
+                        <label for="autocomplete-input">Search authors</label>
                     </div>
                     <div class="col s12 m12 l4 right-align">
-                        <input type="button" id="add-book" value="Add Book" style="margin-top: 24px" disabled class="btn btn-default"/>
+                        <input type="button" id="add-author" value="Add Author" style="margin-top: 24px" disabled class="btn btn-default"/>
                     </div>
                 </div>
             </div>
@@ -64,30 +72,21 @@
                 <div class="row">
                     <div class="col s12 m12">
                         <div class="card-title">
-                            Create a new book
+                            Create a new Author
                         </div>
                     </div>
                         
-                    <form id="new-book-form" data-parsley-validate="" novalidate>
+                    <form id="new-author-form" data-parsley-validate="" novalidate>
                         <div class="row">
                             <div class="col s12 m6">
-                                <input name="title" id="title" type="text" placeholder="Title"/>
+                                <input type="text" name="firstName" id="firstName" placeholder="First Name"/>
                             </div>
                             <div class="col s12 m6">
-                                <input name="isbn" id="isbn" placeholder="ISBN" required=""/>
-                            </div>
-                            <div class="col s12 m12">
-                                <textarea name="description" id="description" class="materialize-textarea" placeholder="Description" data-length="250" data-parsley-maxlength="250"></textarea>
-                            </div>
-                            <div class="col s12 m6">
-                                <input name="datePublished" id="datePublished" type="text" class="datepicker" placeholder="Date Published" required="">
-                            </div>
-                            <div class="col s12 m6">
-                                <input type="number" id="stock" name="stock" placeholder="Stock" value="0"/>
+                                <input type="text" name="lastName" id="lastName" placeholder="Last Name"/>
                             </div>
                         </div>
                         <div class="col s12 m3 right-align">
-                            <input type="submit" value="Add Book" style="margin-top: 24px" class="btn btn-default"/>
+                            <input type="submit" value="Add Author" style="margin-top: 24px" class="btn btn-default"/>
                         </div>
                     </form>
                 </div>
@@ -102,9 +101,9 @@
         'use strict';    
         $(document).ready(function() {
 
-            var selectedBook;
-            var bookTitles = [];
-            var bookTitlesArray = {};
+            var selectedAuthor;
+            var authors = [];
+            var authorsArray = {};
 
             $(".datepicker").pickadate({
                 selectMonths: true,
@@ -116,24 +115,7 @@
                 closeOnSelect: true
             });
 
-            $("#authorForm").validate({
-                errorClass: 'invalid',
-                debug: true,
-                rules: {
-                    firstName: 'required',
-                    lastName: 'required'
-                },
-                messages: {
-                    firstName: 'Please insert a first name for the author',
-                    lastName: 'Please insert a last name for the author'
-                },
-                submitHandler: function(form) {
-                    // do other things for a valid form
-                    form.submit();
-                }
-            });
-
-            $("#new-book-form").validate({
+            $("#bookForm").validate({
                 errorClass: 'invalid',
                 rules: {
                     title: 'required',
@@ -144,7 +126,7 @@
                         min: 0,
                         max: 45
                     },
-                    datePublised: 'required'
+                    datePublished: 'required'
                 },
                 messages: {
                     title: 'Please insert a title',
@@ -157,19 +139,29 @@
                     datePublished: "Please choose a date of publishing"
                 },
                 submitHandler: function (form) { // for demo
-                    var title = $("#title").val();
-                    var isbn = $("#isbn").val();
-                    var description = $("#description").val();
-                    var datePublished = $("#datePublished").val();
-                    var stock = $("#stock").val();
+                    form.submit();
+                }
+            });
+
+            $("#new-author-form").validate({
+                errorClass: 'invalid',
+                rules: {
+                    firstName: 'required',
+                    lastName: 'required'
+                },
+                messages: {
+                    title: 'Please insert a first name for the author',
+                    isbn: 'Please insert a last name for the author'
+                },
+                submitHandler: function (form) { // for demo
+                    var firstName = $("#firstName").val();
+                    var lastName = $("#lastName").val();
                     var i = $(".items").length;
-                    var html = "<div class='items' id='book-" + i + "'>";
-                    html += '<input class="isbn" type="hidden" name="Books[' + i + '].ISBN" value="'+ isbn +'" />';
-                    html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="'+ description +'" />';
-                    html += '<input class="datePublished" type="hidden" name="Books[' + i + '].DatePublished" value="'+ datePublished +'" />';
-                    html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" value="'+ stock +'" />';
+                    var html = "<div class='items'>";
+                    html += '<input class="firstName" type="hidden" name="Authors[' + i + '].FirstName" value="'+ firstName +'" />';
+                    html += '<input class="lastName" type="hidden" name="Authors[' + i + '].LastName" value="'+ lastName +'" />';
                     html += '<div class="input-field">' +
-                        '<input type="text" class="title" name="Books[' + i + '].Title" value="' + title + '" readonly="readonly"/>' +
+                        '<input type="text" value="' + firstName + "" + lastName + '" readonly="readonly"/>' +
                         '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
                         '</div>';
                     html += '</div>';                 
@@ -179,24 +171,29 @@
                 }
             });
 
-            $.get('http://localhost:5004/api/books/getTitles',
+            $.get('http://localhost:5004/api/authors/',
                 function(data) {
-                    var books = data.data;
-                    for (var i = 0; i < books.length; i++) {
-                        bookTitles.push(books[i]);
-                        bookTitlesArray[books[i].title] = null;
+                    var authorsDto = data.data;
+                    for (var i = 0; i < authorsDto.length; i++) {
+                        authors.push(authorsDto[i]);
+                        authorsArray[authorsDto[i].firstName + " "  + authorsDto[i].lastName] = null;
                     }
+
+                    console.log(authors);
+                    console.log(authorsArray);
                     
                     $('#autocomplete-input').autocomplete({
-                        data: bookTitlesArray,
+                        data: authorsArray,
                         limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
                         onAutocomplete: function(val) {
                             // Callback function when value is autcompleted.
-                            selectedBook = bookTitles.find(function(element) {
-                                return element.title === val;
+                            selectedAuthor = authors.find(function(element) {
+                                return element.firstName + " " + element.lastName === val;
                             });
 
-                            $("#add-book").removeAttr("disabled");
+                            console.log(selectedAuthor);
+
+                            $("#add-author").removeAttr("disabled");
                         },
                         minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
                     });
@@ -209,16 +206,15 @@
                 refreshNames();
             });
                 
-            $("#add-book").click(function(e) {
+            $("#add-author").click(function(e) {
                 e.preventDefault();
                 var i = $(".items").length;
-                var html = "<div class='items' id='book-" + i + "'>";
-                html += '<input class="id" type="hidden" name="Books[' + i + '].Id" value="'+ selectedBook.id + '" />';
-//                html += '<input class="isbn" type="hidden" name="Books[' + i + '].ISBN" value="" />';
-//                html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="" />';    
-//                html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" />';
+                var html = "<div class='items'>";
+                html += '<input class="id" type="hidden" name="Authors[' + i + '].Id" value="'+ selectedAuthor.id + '" />';
+                html += '<input class="firstName" type="hidden" name="Authors[' + i + '].FirstName" value="'+ selectedAuthor.firstName +'" />';
+                html += '<input class="lastName" type="hidden" name="Authors[' + i + '].LastName" value="'+ selectedAuthor.lastName +'" />'; 
                 html += '<div class="input-field">' +
-                    '<input type="text" class="title" name="Books[' + i + '].Title" value="' + selectedBook.title + '" readonly="readonly"/>' +
+                    '<input type="text" value="' + selectedAuthor.firstName + " " + selectedAuthor.lastName + '" readonly="readonly"/>' +
                     '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
                     '</div>';
                 html += '</div>';                 
@@ -228,12 +224,9 @@
 
             function refreshNames() {
                 $("#item-list").find(".items").each(function(i) {
-                    $(this).find(".id").attr('name', 'Books[' + i + '].Id');
-                    $(this).find(".title").attr('name', 'Books[' + i + '].Title');
-                    $(this).find(".isbn").attr('name', 'Books[' + i + '].ISBN');
-                    $(this).find(".description").attr('name', 'Books[' + i + '].Description');                        
-                    $(this).find(".datePublished").attr('name', 'Books[' + i + '].DatePublished');
-                    $(this).find(".stock").attr('name', 'Books[' + i + '].Stock');
+                    $(this).find(".id").attr('name', 'Authors[' + i + '].Id');
+                    $(this).find(".firstName").attr('name', 'Authors[' + i + '].FirstName');
+                    $(this).find(".lastName").attr('name', 'Authors[' + i + '].LastName');
                 });
             }
             

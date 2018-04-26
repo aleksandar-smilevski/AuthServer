@@ -52,7 +52,7 @@ namespace AuthServer.API.Repositories.Book
 
             try
             {
-                var book = await _dbContext.Books.Include(x => x.Authors).ThenInclude(x => x.Author)
+                var book = await _dbContext.Books.Include(x => x.Authors).ThenInclude(x => x.Author).Where(x => x.Id == id)
                     .FirstOrDefaultAsync();
 
                 if (book == null)
