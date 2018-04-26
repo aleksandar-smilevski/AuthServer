@@ -49,6 +49,12 @@ namespace AuthServer.API
                 cfg.CreateMap<Book, BookPreviewDto>();
                 cfg.CreateMap<AuthorDto, Author>().ForMember(x => x.Books, opt => opt.Ignore());
                 cfg.CreateMap<BookPreviewDto, Book>().ForMember(x => x.Authors, opt => opt.Ignore());
+                
+                cfg.CreateMap<Book, BookDto>()
+                    .ForMember(x => x.Authors, opt => opt.MapFrom(src => src.Authors.Select(x => x.Author).ToList()));
+                cfg.CreateMap<BookDto, Book>().ForMember(x => x.Authors, opt => opt.Ignore());
+                cfg.CreateMap<Author, AuthorPreviewDto>();
+                cfg.CreateMap<AuthorPreviewDto, Author>().ForMember(x => x.Books, opt => opt.Ignore());
 //                cfg.CreateMap<Book, BookDto>();
             });
             
