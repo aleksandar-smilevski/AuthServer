@@ -1,14 +1,254 @@
-﻿@model TModel
+﻿@model BookDto
 
-<!DOCTYPE html>
+@{
+    ViewData["Title"] = "Edit book";
+}
 
-<html>
-<head>
-    <title>title</title>
-</head>
-<body>
-<div>
-      
+<h4>Edit book</h4>
+
+<div class="row">
+    <form id="bookForm" asp-action="Edit" method="post">
+        <div class="col s12 m12 l9">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-title">
+                        Add details for the book
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <input type="hidden" asp-for="Id" value="@Model.Id"/>
+                            <input asp-for="Title" name="title" type="text" placeholder="Title" value="@Model.Title"/>
+                        </div>
+                        <div class="col s12 m6">
+                            <input asp-for="ISBN" name="isbn" placeholder="ISBN" required="" value="@Model.ISBN"/>
+                        </div>
+                        <div class="col s12 m12">
+                            <textarea asp-for="Description" name="description" class="materialize-textarea" placeholder="Description" data-length="250">@Model.Description</textarea>
+                        </div>
+                        <div class="col s12 m6">
+                            <input asp-for="DatePublished" name="datePublished" id="datePublished" type="text" class="datepicker" placeholder="Date Published" value="@Model.DatePublished">
+                        </div>
+                        <div class="col s12 m6">
+                            <input type="number" asp-for="Stock" name="stock" placeholder="Stock" value="@Model.Stock"/>
+                        </div>
+                        <div class="col s12 m3 right-align">
+                            <input type="submit" value="Create" class="btn btn-default"/>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m12 l3">
+            <div class="row" >
+                <p>Authors selected:</p>
+                <div class="col s12" id="item-list" asp-for="Authors">
+                    @{
+                        var i = 0;
+                    }
+                    @foreach (var author in Model.Authors)
+                    {
+                        <div class="items">
+                            <input class="firstName" type="hidden" name="Authors[@i].Id" value="@author.Id"/>
+                            <input class="firstName" type="hidden" name="Authors[@i].FirstName" value="@author.FirstName"/>
+                            <input class="lastName" type="hidden" name="Authors[@i].LastName" value="@author.LastName"/>
+                            <div class="input-field suffix">
+                                <input type="text" class="title" value="@author.FirstName  @author.LastName" readonly="readonly"/>
+                                <i class="deleteButton material-icons prefix" style="margin-top: 10px; font-size: 18px; cursor: pointer">close</i>
+                            </div>
+                        </div>
+                        i++;
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+    <div class="col s12 m12 l9">
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card-title">
+                            Add authors to this book
+                        </div>
+                    </div>
+                    <div class="input-field col s12 m12 l8">
+                        <i class="material-icons prefix" style="margin-top:10px">search</i>
+                        <input type="text" id="autocomplete-input" class="autocomplete" autocomplete="off">
+                        <label for="autocomplete-input">Search authors</label>
+                    </div>
+                    <div class="col s12 m12 l4 right-align">
+                        <input type="button" id="add-author" value="Add Author" style="margin-top: 24px" disabled class="btn btn-default"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col s12 m12">
+                        <div class="card-title">
+                            Create a new Author
+                        </div>
+                    </div>
+                        
+                    <form id="new-author-form" data-parsley-validate="" novalidate>
+                        <div class="row">
+                            <div class="col s12 m6">
+                                <input type="text" name="firstName" id="firstName" placeholder="First Name"/>
+                            </div>
+                            <div class="col s12 m6">
+                                <input type="text" name="lastName" id="lastName" placeholder="Last Name"/>
+                            </div>
+                        </div>
+                        <div class="col s12 m3 right-align">
+                            <input type="submit" value="Add Author" style="margin-top: 24px" class="btn btn-default"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</body>
-</html>
+
+@section Scripts
+{
+    <script>
+        'use strict';    
+        $(document).ready(function() {
+
+            var selectedAuthor;
+            var authors = [];
+            var authorsArray = {};
+
+            $(".datepicker").pickadate({
+                selectMonths: true,
+                selectYears: 150,// Creates a dropdown to control month
+                min: new Date(1400, 0), // Creates a dropdown of 15 years to control year,
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: true
+            });
+
+            $("#bookForm").validate({
+                errorClass: 'invalid',
+                rules: {
+                    title: 'required',
+                    isbn: 'required',
+                    description: 'required',
+                    stock: {
+                        required: true,
+                        min: 0,
+                        max: 45
+                    },
+                    datePublished: 'required'
+                },
+                messages: {
+                    title: 'Please insert a title',
+                    isbn: 'Please insert the ISBN of the book',
+                    description: 'Please provide a small description for the book',
+                    stock: {
+                        min: "Minimum value is 0",
+                        max: "Maximum value is 45"
+                    },
+                    datePublished: "Please choose a date of publishing"
+                },
+                submitHandler: function (form) { // for demo
+                    form.submit();
+                }
+            });
+
+            $("#new-author-form").validate({
+                errorClass: 'invalid',
+                rules: {
+                    firstName: 'required',
+                    lastName: 'required'
+                },
+                messages: {
+                    title: 'Please insert a first name for the author',
+                    isbn: 'Please insert a last name for the author'
+                },
+                submitHandler: function (form) { // for demo
+                    var firstName = $("#firstName").val();
+                    var lastName = $("#lastName").val();
+                    var i = $(".items").length;
+                    var html = "<div class='items'>";
+                    html += '<input class="firstName" type="hidden" name="Authors[' + i + '].FirstName" value="'+ firstName +'" />';
+                    html += '<input class="lastName" type="hidden" name="Authors[' + i + '].LastName" value="'+ lastName +'" />';
+                    html += '<div class="input-field suffix">' +
+                        '<input type="text" value="' + firstName + "" + lastName + '" readonly="readonly"/>' +
+                        '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
+                        '</div>';
+                    html += '</div>';                 
+                    $("#item-list").append(html);
+                    refreshNames();
+                    return false;
+                }
+            });
+
+            $.get('http://localhost:5004/api/authors/',
+                function(data) {
+                    var authorsDto = data.data;
+                    for (var i = 0; i < authorsDto.length; i++) {
+                        authors.push(authorsDto[i]);
+                        authorsArray[authorsDto[i].firstName + " "  + authorsDto[i].lastName] = null;
+                    }
+
+                    console.log(authors);
+                    console.log(authorsArray);
+                    
+                    $('#autocomplete-input').autocomplete({
+                        data: authorsArray,
+                        limit: 20, // The max amount of results that can be shown at once. Default: Infinity.
+                        onAutocomplete: function(val) {
+                            // Callback function when value is autcompleted.
+                            selectedAuthor = authors.find(function(element) {
+                                return element.firstName + " " + element.lastName === val;
+                            });
+
+                            console.log(selectedAuthor);
+
+                            $("#add-author").removeAttr("disabled");
+                        },
+                        minLength: 1 // The minimum length of the input for the autocomplete to start. Default: 1.
+                    });
+                    
+                });
+
+            $("#item-list").on("click", ".deleteButton" ,function(e) {
+                var elementToDelete = $(e.target).parent().parent();
+                $(elementToDelete).remove();
+                refreshNames();
+            });
+                
+            $("#add-author").click(function(e) {
+                e.preventDefault();
+                var i = $(".items").length;
+                var html = "<div class='items'>";
+                html += '<input class="id" type="hidden" name="Authors[' + i + '].Id" value="'+ selectedAuthor.id + '" />';
+                html += '<input class="firstName" type="hidden" name="Authors[' + i + '].FirstName" value="'+ selectedAuthor.firstName +'" />';
+                html += '<input class="lastName" type="hidden" name="Authors[' + i + '].LastName" value="'+ selectedAuthor.lastName +'" />'; 
+                html += '<div class="input-field suffix">' +
+                    '<input type="text" value="' + selectedAuthor.firstName + " " + selectedAuthor.lastName + '" readonly="readonly"/>' +
+                    '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
+                    '</div>';
+                html += '</div>';                 
+                $("#item-list").append(html);
+                refreshNames();
+            });
+
+            function refreshNames() {
+                $("#item-list").find(".items").each(function(i) {
+                    $(this).find(".id").attr('name', 'Authors[' + i + '].Id');
+                    $(this).find(".firstName").attr('name', 'Authors[' + i + '].FirstName');
+                    $(this).find(".lastName").attr('name', 'Authors[' + i + '].LastName');
+                });
+            }
+            
+        });
+
+
+    </script>
+}

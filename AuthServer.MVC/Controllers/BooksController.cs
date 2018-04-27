@@ -102,5 +102,67 @@ namespace AuthServer.MVC.Controllers
                 .Select(x => x.ErrorMessage));
             return View(messages);
         }
+        
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.GetAsync(new Uri($"http://localhost:5004/api/books/{id}"));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseObject = JsonConvert.DeserializeObject<ResponseObject<BookDto>>(await response.Content.ReadAsStringAsync());
+                        return View(responseObject.Data);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
+
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Edit(BookDto newBook)
+        {
+            if (ModelState.IsValid)
+            {
+                if (newBook.Id == Guid.Empty)
+                {
+                    return new  BadRequestObjectResult(newBook);   
+                }
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        var jsonString = JsonConvert.SerializeObject(newBook);
+                        
+                        var response = await client.PostAsync(new Uri($"http://localhost:5004/api/books    /update/"), new StringContent(jsonString, Encoding.UTF8, "application/json"));
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var responseObject = JsonConvert.DeserializeObject<ResponseObject<bool>>(await response.Content.ReadAsStringAsync());
+                            if(responseObject.ResponseType == ResponseType.Success)
+                                return RedirectToAction("Index");
+                        }
+                        else
+                        {
+                            return View();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    return new BadRequestObjectResult(e.Message);
+                }
+            }
+            string messages = string.Join("; ", ModelState.Values
+                .SelectMany(x => x.Errors)
+                .Select(x => x.ErrorMessage));
+            return View(messages);
+        }
     }
 }

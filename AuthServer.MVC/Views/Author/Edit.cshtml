@@ -8,7 +8,7 @@
 
 <div class="row">
     <form id="authorForm" asp-action="Edit" method="post">
-        <div class="col s12 m9">
+        <div class="col s12 m12 l9">
             <div class="card">
                 <div class="card-content">
                     <div class="card-title">
@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="col s12 m3">
+        <div class="col s12 m12 l3">
             <div class="row" >
                 <p>Books selected:</p>
                 <div class="col s12" id="item-list" asp-for="Books">
@@ -39,16 +39,6 @@
                     }
                     @foreach (var book in Model.Books)
                     {
-//                        var html = "<div class='items' id='book-" + i + "'>";
-//                        html += '<input class="isbn" type="hidden" name="Books[' + i + '].ISBN" value="'+ isbn +'" />';
-//                        html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="'+ description +'" />';
-//                        html += '<input class="datePublished" type="hidden" name="Books[' + i + '].DatePublished" value="'+ datePublished +'" />';
-//                        html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" value="'+ stock +'" />';
-//                        html += '<div class="input-field">' +
-//                                '<input type="text" class="title" name="Books[' + i + '].Title" value="' + title + '" readonly="readonly"/>' +
-//                                '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
-//                                '</div>';
-//                        html += '</div>'; 
                         <div class="items">
                             <input class="isbn" type="hidden" name="Books[@i].ISBN" value="@book.ISBN"/>
                             <input class="description" type="hidden" name="Books[@i].Description" value="@book.Description" />
@@ -65,7 +55,7 @@
             </div>
         </div>
     </form>
-    <div class="col s12 m9">
+    <div class="col s12 m12 l9">
         <div class="card">
             <div class="card-content">
                 <div class="row">
@@ -74,12 +64,12 @@
                             Add books to this author
                         </div>
                     </div>
-                    <div class="input-field col s12 m9">
+                    <div class="input-field col s12 m12 l8">
                         <i class="material-icons prefix" style="margin-top:10px">search</i>
                         <input type="text" id="autocomplete-input" class="autocomplete" autocomplete="off">
                         <label for="autocomplete-input">Search books</label>
                     </div>
-                    <div class="col s12 m3 right-align">
+                    <div class="col s12 m12 l4 right-align">
                         <input type="button" id="add-book" value="Add Book" style="margin-top: 24px" disabled class="btn btn-default"/>
                     </div>
                 </div>
@@ -194,7 +184,7 @@
                     html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="'+ description +'" />';
                     html += '<input class="datePublished" type="hidden" name="Books[' + i + '].DatePublished" value="'+ datePublished +'" />';
                     html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" value="'+ stock +'" />';
-                    html += '<div class="input-field">' +
+                    html += '<div class="input-field suffix">' +
                         '<input type="text" class="title" name="Books[' + i + '].Title" value="' + title + '" readonly="readonly"/>' +
                         '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
                         '</div>';
@@ -241,10 +231,7 @@
                 var i = $(".items").length;
                 var html = "<div class='items' id='book-" + i + "'>";
                 html += '<input class="id" type="hidden" name="Books[' + i + '].Id" value="'+ selectedBook.id + '" />';
-//                html += '<input class="isbn" type="hidden" name="Books[' + i + '].ISBN" value="" />';
-//                html += '<input class="description" type="hidden" name="Books[' + i + '].Description" value="" />';    
-//                html += '<input class="stock" type="hidden" name="Books[' + i + '].Stock" />';
-                html += '<div class="input-field">' +
+                html += '<div class="input-field suffix">' +
                     '<input type="text" class="title" name="Books[' + i + '].Title" value="' + selectedBook.title + '" readonly="readonly"/>' +
                     '<i class="deleteButton material-icons prefix" style="margin-top:10px; font-size:18px; cursor: pointer">close</i>' +
                     '</div>';
