@@ -38,15 +38,16 @@
         
         <div class="container">
             <div class="row">
-                <div class="col s3">
+                <div class="col l2">
+                    <blockquote>
+                        Quick links
+                    </blockquote>
                     <mz-collection>
-                        <mz-collection-item (click)="addToCart({ id: 1, title: 'some title', description: 'some description'})">Collection item 1</mz-collection-item>
-                        <mz-collection-item>Collection item 2</mz-collection-item>
-                        <mz-collection-item>Collection item 3</mz-collection-item>
-                        <mz-collection-item>Collection item 4</mz-collection-item>
+                        <mz-collection-item><a routerLink="/books" style="color: black">Books</a></mz-collection-item>
+                        <mz-collection-item><a routerLink="/authors" style="color: black">Authors</a></mz-collection-item>
                     </mz-collection>
                 </div>
-                <div class="col s9">
+                <div class="col l10">
                     <router-outlet></router-outlet>
                 </div>
             </div>
