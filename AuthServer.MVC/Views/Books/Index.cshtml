@@ -23,6 +23,9 @@
             <td>
                 <a asp-action="Details" asp-route-id="@book.Id">More</a><br />
                 <a asp-action="Edit" asp-route-id="@book.Id">Edit</a>
+                <form asp-action="Delete" asp-controller="Books" asp-route-id="@book.Id" method="post">
+                    <input type="submit" class="btn-flat red-text" value="Delete"/>
+                </form>
             </td>
         </tr>
     }

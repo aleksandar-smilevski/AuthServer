@@ -103,7 +103,7 @@ namespace AuthServer.API.Controllers
 
         }
         
-        [HttpDelete("delete")]
+        [HttpPost("delete/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try

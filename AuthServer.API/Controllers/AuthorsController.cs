@@ -111,7 +111,7 @@ namespace AuthServer.API.Controllers
             }
         }
         
-        [HttpDelete("delete")]
+        [HttpPost("delete/{id}")]
         public async Task<ResponseObject<bool>> Delete(Guid id)
         {
             try

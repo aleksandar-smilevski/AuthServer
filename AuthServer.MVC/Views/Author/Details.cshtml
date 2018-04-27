@@ -49,10 +49,32 @@
                 }
             </td>
             <td>
-                <a asp-action="Edit" asp-controller="Book" asp-route-id="@book.Id">Edit</a>
-                <a class="red-text" asp-action="Delete" asp-controller="Book" asp-route-id="@book.Id">Delete</a>
+                <a asp-action="Edit" asp-controller="Books" asp-route-id="@book.Id">Edit</a>
+                
+                
             </td>
         </tr>
     }
     </tbody>
 </table>
+
+<a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
+
+<div id="modal1" class="modal">
+    <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>A bunch of text</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function() {
+            $('.modal').modal();
+        });
+    </script>
+}

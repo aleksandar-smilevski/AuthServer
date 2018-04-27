@@ -141,7 +141,7 @@ namespace AuthServer.MVC.Controllers
                     {
                         var jsonString = JsonConvert.SerializeObject(newBook);
                         
-                        var response = await client.PostAsync(new Uri($"http://localhost:5004/api/books    /update/"), new StringContent(jsonString, Encoding.UTF8, "application/json"));
+                        var response = await client.PostAsync(new Uri($"http://localhost:5004/api/books/update/"), new StringContent(jsonString, Encoding.UTF8, "application/json"));
                         if (response.IsSuccessStatusCode)
                         {
                             var responseObject = JsonConvert.DeserializeObject<ResponseObject<bool>>(await response.Content.ReadAsStringAsync());
@@ -163,6 +163,38 @@ namespace AuthServer.MVC.Controllers
                 .SelectMany(x => x.Errors)
                 .Select(x => x.ErrorMessage));
             return View(messages);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return new BadRequestResult();   
+            }
+            try
+            {
+                using (var client = new HttpClient())
+                {  
+                    var response = await client.PostAsync(new Uri($"http://localhost:5004/api/books/delete/{id}"), new StringContent(""));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseObject = JsonConvert.DeserializeObject<ResponseObject<bool>>(await response.Content.ReadAsStringAsync());
+                        if(responseObject.ResponseType == ResponseType.Success)
+                            return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }

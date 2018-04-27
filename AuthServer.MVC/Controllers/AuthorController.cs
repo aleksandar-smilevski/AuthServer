@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using AuthServer.MVC.Helpers;
 using AuthServer.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Newtonsoft.Json;
 
 namespace AuthServer.MVC.Controllers
@@ -64,7 +63,7 @@ namespace AuthServer.MVC.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             var model = new AuthorDto();
             return View(model);
@@ -165,6 +164,38 @@ namespace AuthServer.MVC.Controllers
                 .SelectMany(x => x.Errors)
                 .Select(x => x.ErrorMessage));
             return View(messages);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return new BadRequestResult();   
+            }
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var response = await client.PostAsync(new Uri($"http://localhost:5004/api/authors/delete/{id}"), new StringContent(""));
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseObject = JsonConvert.DeserializeObject<ResponseObject<bool>>(await response.Content.ReadAsStringAsync());
+                        if(responseObject.ResponseType == ResponseType.Success)
+                            return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return new BadRequestObjectResult(e.Message);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
