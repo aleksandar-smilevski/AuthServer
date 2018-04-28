@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using IdentityModel
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -31,7 +32,17 @@
             <li class="@(activeRoute.ToString() == "Index" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
             <li class="@(activeRoute.ToString() == "About" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
             <li class="@(activeRoute.ToString() == "Contact" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+            @if (User.Identity.IsAuthenticated)
+            {
+                
+                <li><a class="dropdown-trigger" data-activates="logoutDropdown">@User.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)?.Value<i class="material-icons right">arrow_drop_down</i></a></li>
+            }
         </ul>
+        
+        <ul id="logoutDropdown" class="dropdown-content">
+            <li><a asp-action="Logout" asp-controller="Home">Logout</a></li>
+        </ul>
+        
         <ul class="side-nav" id="mobile-demo">
             <li class="@(activeRoute.ToString() == "Index" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
             <li class="@(activeRoute.ToString() == "About" ? "active" : "")"><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
@@ -88,6 +99,8 @@
 <script>
     $(document).ready(function() {
         $(".button-collapse").sideNav();
+           
+        $(".dropdown-trigger").dropdown();
     });
 </script>
 

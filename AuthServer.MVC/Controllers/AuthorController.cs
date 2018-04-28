@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using AuthServer.MVC.Helpers;
 using AuthServer.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace AuthServer.MVC.Controllers
 {
+    [Authorize(Policy = "CanAccessPage")]
     public class AuthorController : Controller
     {
         // GET
@@ -63,6 +65,7 @@ namespace AuthServer.MVC.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "CanAddBooks")]
         public IActionResult Create()
         {
             var model = new AuthorDto();
@@ -70,6 +73,7 @@ namespace AuthServer.MVC.Controllers
         }
         
         [HttpPost]
+        [Authorize(Policy = "CanAddBooks")]
         public async Task<IActionResult> Create(AuthorDto newAuthor)
         {
             if (ModelState.IsValid)
@@ -105,6 +109,7 @@ namespace AuthServer.MVC.Controllers
         }
         
         [HttpGet]
+        [Authorize(Policy = "CanAddBooks")]
         public async Task<IActionResult> Edit(Guid id)
         {
             try
@@ -128,6 +133,7 @@ namespace AuthServer.MVC.Controllers
         }
         
         [HttpPost]
+        [Authorize(Policy = "CanAddBooks")]
         public async Task<IActionResult> Edit(AuthorDto newAuthor)
         {
             if (ModelState.IsValid)
@@ -167,6 +173,7 @@ namespace AuthServer.MVC.Controllers
         }
         
         [HttpPost]
+        [Authorize(Policy = "CanAddBooks")]
         public async Task<IActionResult> Delete(Guid id)
         {
             if (id == Guid.Empty)

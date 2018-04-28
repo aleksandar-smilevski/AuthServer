@@ -2,10 +2,12 @@
 using System.Threading.Tasks;
 using AuthServer.API.Dto;
 using AuthServer.API.Repositories.Book;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.API.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/books")]
     public class BooksController : Controller
     {

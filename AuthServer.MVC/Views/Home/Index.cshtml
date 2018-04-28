@@ -1,42 +1,4 @@
-﻿@using IdentityModel
-@{
-    ViewData["Title"] = "Home Page";
+﻿@foreach (var claim in User.Claims)
+{
+    <p>@claim.Type - @claim.Value;</p>
 }
-
-<div class="container">
-    <div class="row">
-        <div class="row">
-            <div class="col offset-s3 s6">
-                <div class="card-panel white">
-                    <span class="teal-text">I am a very simple card. I am good at containing small bits of information.
-                        I am convenient because I require little markup to use effectively. I am similar to what is called a panel in other frameworks.
-                    </span>
-                </div>
-            </div>
-            <div class="col offset-s3 s6">
-                <div class="card white">
-                    <div class="card-content teal-text">
-                        <p class="text-center">@User.Claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name)?.Value</p>
-                    </div>
-                    <div class="card-tabs">
-                        <ul class="tabs tabs-fixed-width">
-                            <li class="tab teal-text"><a href="#test4">Test 1</a></li>
-                            <li class="tab teal-text"><a class="active teal-text" href="#test5">Test 2</a></li>
-                            <li class="tab teal-text"><a href="#test6">Test 3</a></li>
-                        </ul>
-                    </div>
-                    <div class="card-content grey lighten-4">
-                        <div id="test4" style="word-break: break-all;">
-                            @foreach (var claim in User.Claims)
-                            {
-                                <p >@claim.Type - @claim.Value</p> 
-                            }
-                        </div>
-                        <div id="test5">Test 2</div>
-                        <div id="test6">Test 3</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

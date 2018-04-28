@@ -2,6 +2,7 @@
 using AuthServer.Core.Models;
 using IdentityServer4;
 using IdentityServer4.Models;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace AuthServer.Core
 {
@@ -47,9 +48,10 @@ namespace AuthServer.Core
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email
+                        IdentityServerConstants.StandardScopes.Email,
+                        "api1"
                     },
-                    //AlwaysIncludeUserClaimsInIdToken = true
+                    AlwaysIncludeUserClaimsInIdToken = true
 
                 },
                 //or Angular Client
@@ -62,7 +64,9 @@ namespace AuthServer.Core
                     PostLogoutRedirectUris = new List<string> { "http://localhost:5003/" },
                     AllowedCorsOrigins = new List<string> { "http://localhost:5003" },
                     RequireConsent = false,
-                    AllowAccessTokensViaBrowser = true
+                    AllowAccessTokensViaBrowser = true,
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AlwaysSendClientClaims = true
                 },
                 //Winforms Client
                 //Android Client
@@ -96,10 +100,18 @@ namespace AuthServer.Core
         {
             return new List<ApplicationUser>
             {
-                new ApplicationUser("Admin"),
-                new ApplicationUser("Customer1"),
-                new ApplicationUser("Customer2"),
-                new ApplicationUser("Employee")
+                new ApplicationUser("Admin")
+                {
+                    Email = "admin@authserver.com"
+                },
+                new ApplicationUser("Moderator")
+                {
+                    Email = "mod@authserver.com"
+                },
+                new ApplicationUser("Customer")
+                {
+                    Email = "customer@customer.com"
+                }
             };
         }
     }

@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using AuthServer.MVC.Helpers;
 using AuthServer.MVC.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace AuthServer.MVC.Controllers
 {
+    [Authorize(Policy = "CanAccessPage")]
     public class BooksController : Controller
     {
         // GET
@@ -61,6 +63,7 @@ namespace AuthServer.MVC.Controllers
             return View();
         }
         
+        [Authorize(Policy = "CanAddBooks")]
         [HttpGet]
         public IActionResult Create()
         {
@@ -68,6 +71,7 @@ namespace AuthServer.MVC.Controllers
             return View(model);
         }
         
+        [Authorize(Policy = "CanAddBooks")]
         [HttpPost]
         public async Task<IActionResult> Create(BookDto newBook)
         {
@@ -103,6 +107,7 @@ namespace AuthServer.MVC.Controllers
             return View(messages);
         }
         
+        [Authorize(Policy = "CanAddBooks")]
         [HttpGet]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -126,6 +131,7 @@ namespace AuthServer.MVC.Controllers
             return View();
         }
         
+        [Authorize(Policy = "CanAddBooks")]
         [HttpPost]
         public async Task<IActionResult> Edit(BookDto newBook)
         {
@@ -165,6 +171,7 @@ namespace AuthServer.MVC.Controllers
             return View(messages);
         }
 
+        [Authorize(Policy = "CanAddBooks")]
         [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AuthServer.MVC
 {
@@ -37,7 +38,18 @@ namespace AuthServer.MVC
                     options.ClientSecret = "secret";
                     options.SaveTokens = true;
                     options.GetClaimsFromUserInfoEndpoint = true;
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        RoleClaimType = "role",
+                        NameClaimType = "name"
+                    };
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CanAddBooks", policy => policy.RequireClaim("CanAddBooks"));
+                options.AddPolicy("CanAccessPage", policy => policy.RequireClaim("CanAccessPage"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

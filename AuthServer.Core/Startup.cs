@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using AuthServer.Core.Data;
 using AuthServer.Core.Models;
 using AuthServer.Core.Services;
+using IdentityServer4.AspNetIdentity;
 
 namespace AuthServer.Core
 {
@@ -40,6 +43,7 @@ namespace AuthServer.Core
                 .AddInMemoryClients(Config.GetClients())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddAspNetIdentity<ApplicationUser>()
+                .AddProfileService<CustomProfileService>()
                 .AddDeveloperSigningCredential();
 
         }
@@ -77,15 +81,34 @@ namespace AuthServer.Core
             using (var scope = scopeFactory.CreateScope())
             {
                 var appDbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+                appDbContext.Database.EnsureDeleted();
                 appDbContext.Database.Migrate();
 
                 var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
+                var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
 
-                if (!userManager.Users.Any())
+                roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
+                roleManager.CreateAsync(new IdentityRole("Moderator")).Wait();
+
+                var adminRole = roleManager.FindByNameAsync("Admin").Result;
+                var moderatorRole = roleManager.FindByNameAsync("Moderator").Result;
+
+                roleManager.AddClaimAsync(adminRole, new Claim("CanAccessPage", "")).Wait();
+                roleManager.AddClaimAsync(adminRole, new Claim("CanAddBooks", "")).Wait();
+                roleManager.AddClaimAsync(moderatorRole, new Claim("CanAccessPage", "")).Wait();
+
+                if (userManager.Users.Any()) return;
+                foreach (var user in Config.GetUsers())
                 {
-                    foreach (var user in Config.GetUsers())
+                    userManager.CreateAsync(user, "Password123!").Wait();
+                    if (user.UserName.Equals("Admin"))
                     {
-                        userManager.CreateAsync(user, "Password123!").Wait();
+                        userManager.AddToRoleAsync(user, "Admin").Wait();
+                    }
+                    else if (user.UserName.Equals("Moderator"))
+                    {
+                        userManager.AddToRoleAsync(user, "Moderator").Wait();
                     }
                 }
             }

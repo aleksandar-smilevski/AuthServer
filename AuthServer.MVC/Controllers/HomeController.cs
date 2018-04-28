@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using AuthServer.MVC.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 
 namespace AuthServer.MVC.Controllers
@@ -29,6 +31,13 @@ namespace AuthServer.MVC.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("oidc");
+            await HttpContext.SignOutAsync("Cookies");
+            return RedirectToAction("Index");
         }
     }
 }

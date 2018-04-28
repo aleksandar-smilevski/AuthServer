@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AuthServer.API.Database;
 using AuthServer.API.Dto;
 using AuthServer.API.Models;
 using AuthServer.API.Repositories.Author;
 using AuthServer.API.Repositories.Book;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +59,14 @@ namespace AuthServer.API
                 cfg.CreateMap<AuthorPreviewDto, Author>().ForMember(x => x.Books, opt => opt.Ignore());
 //                cfg.CreateMap<Book, BookDto>();
             });
+
+            services.AddAuthentication()
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = "http://localhost:5000";
+                    options.RequireHttpsMetadata = false;
+                    options.Audience = "Api1";
+                });
             
             Mapper.AssertConfigurationIsValid();
         }
