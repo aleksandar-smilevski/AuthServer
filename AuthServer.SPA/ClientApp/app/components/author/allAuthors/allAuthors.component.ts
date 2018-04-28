@@ -3,6 +3,7 @@ import {Component, ElementRef, ViewChild} from "@angular/core";
 import {Http} from "@angular/http";
 import {WebResponseType} from "../../../helpers/webResponseType";
 import {Author} from "../../../models/author";
+import {Router} from "@angular/router";
 
 @Component({
     templateUrl: 'allAuthors.component.html',
@@ -16,7 +17,7 @@ export class AllAuthorsComponent {
     private errorOnLoad: boolean = false;
     private allAuthors: Array<Author> = [];
     
-    constructor(private http: Http) {
+    constructor(private http: Http, private router: Router) {
         this.getAll();
     }
     
@@ -41,8 +42,8 @@ export class AllAuthorsComponent {
             });
     }
     
-    static click(e : Event, authorId: string){
-        console.log(authorId);
+    click(e : Event, authorId: string){
+        this.router.navigate(['/author-details', authorId]);
     }
 }
 

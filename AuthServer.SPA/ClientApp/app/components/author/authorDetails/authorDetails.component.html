@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col s12" *ngIf="isAuthorLoaded">
+        <div class="col s12">
+            <mz-card>
+                <mz-card-content>
+                    {{author.firstName}} {{author.lastName}}
+                </mz-card-content>
+            </mz-card>
+        </div>
+        <div class="col s12">
+            <ul>
+                <li *ngFor="let book of author.books">
+                    <div class="col s12 m4">
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="http://via.placeholder.com/300x150">
+                                <span class="card-title">{{book.title}}</span>
+                            </div>
+                            <div class="card-content">
+                                <p class="truncate">{{book.description}}</p>
+                            </div>
+                            <div class="card-action">
+                                <a routerLink="/books/{{book.id}}">More</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+    </div>
+</div>

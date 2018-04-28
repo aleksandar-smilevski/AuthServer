@@ -19,6 +19,7 @@ import { HomeComponent } from "./components/home/home.component";
 import {AllAuthorsComponent} from "./components/author/allAuthors/allAuthors.component";
 import {CartService} from "./components/cart/cart.service";
 import {CartItemsComponent} from "./components/cartItems/cartItems.component";
+import {AuthorDetailsComponent} from "./components/author/authorDetails/authorDetails.component";
 
 
 const routes: Routes = [
@@ -39,6 +40,10 @@ const routes: Routes = [
     {
         path: 'auth-callback',
         component: AuthCallback
+    },
+    {
+        path:'author-details/:id',
+        component: AuthorDetailsComponent
     }
 ];
 
@@ -49,6 +54,7 @@ const routes: Routes = [
         HomeComponent,
         ProtectedComponent,
         AllAuthorsComponent,
+        AuthorDetailsComponent,
         CartItemsComponent
     ],
     imports: [
