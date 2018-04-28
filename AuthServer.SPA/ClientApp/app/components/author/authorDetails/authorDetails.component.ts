@@ -8,7 +8,7 @@ import {WebResponseType} from "../../../helpers/webResponseType";
     selector: 'author-details',
     templateUrl: './authorDetails.component.html'
 })
-export class AuthorDetailsComponent implements OnInit {
+export class AuthorDetailsComponent {
     
     private id: string;
     private sub: any;
@@ -22,17 +22,12 @@ export class AuthorDetailsComponent implements OnInit {
         });
     }
     
-    ngOnInit(){
-       
-    }
-    
     getAuthor(){
         this.http.get(`http://localhost:5004/api/authors/${this.id}`)
             .map(res => res.json())
             .subscribe(res => {
                if(res.responseType == WebResponseType.Success){
                    this.author = res.data;
-                   console.log(this.author);
                    this.isAuthorLoaded = true;
                } 
             });

@@ -20,6 +20,8 @@ import {AllAuthorsComponent} from "./components/author/allAuthors/allAuthors.com
 import {CartService} from "./components/cart/cart.service";
 import {CartItemsComponent} from "./components/cartItems/cartItems.component";
 import {AuthorDetailsComponent} from "./components/author/authorDetails/authorDetails.component";
+import {AllBooksComponent} from "./components/book/allBooks/allBooks.component";
+import {BookDetailsComponent} from "./components/book/bookDetails/bookDetails.component";
 
 
 const routes: Routes = [
@@ -36,6 +38,14 @@ const routes: Routes = [
     {
         path: 'authors',
         component: AllAuthorsComponent
+    },
+    {
+        path: 'books',
+        component: AllBooksComponent
+    },
+    {
+        path: 'books/:id',
+        component: BookDetailsComponent
     },
     {
         path: 'auth-callback',
@@ -55,6 +65,8 @@ const routes: Routes = [
         ProtectedComponent,
         AllAuthorsComponent,
         AuthorDetailsComponent,
+        AllBooksComponent,
+        BookDetailsComponent,
         CartItemsComponent
     ],
     imports: [

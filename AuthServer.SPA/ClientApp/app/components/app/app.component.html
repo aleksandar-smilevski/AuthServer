@@ -43,8 +43,8 @@
                         Quick links
                     </blockquote>
                     <mz-collection>
-                        <mz-collection-item><a routerLink="/books" style="color: black">Books</a></mz-collection-item>
-                        <mz-collection-item><a routerLink="/authors" style="color: black">Authors</a></mz-collection-item>
+                        <mz-collection-item style="cursor: pointer" (click)="navigateTo('/books')">Books</mz-collection-item>
+                        <mz-collection-item style="cursor: pointer" (click)="navigateTo('/authors')">Authors</mz-collection-item>
                     </mz-collection>
                 </div>
                 <div class="col s12 m12 l10">
