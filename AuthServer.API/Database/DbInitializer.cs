@@ -25,7 +25,8 @@ namespace AuthServer.API.Database
                         "Fiery love, shocking twists of fate, and tragic mysteries put a lonely governess in jeopardy in JANE EYRE",
                     ISBN = "9781519133977",
                     Stock = 10,
-                    Title = "Jane Eyre"
+                    Title = "Jane Eyre",
+                    Price = new decimal (15.99)
                 },
                 new Book
                 {
@@ -35,7 +36,8 @@ namespace AuthServer.API.Database
                     ISBN = " ‎0-486-29256-8",
                     Description =
                         "Wuthering Heights is a wild, passionate story of the intense and almost demonic love between Catherine Earnshaw and Heathcliff, a foundling adopted by Catherine's father.",
-                    Stock = 2
+                    Stock = 2,
+                    Price = new decimal (11.99)
                 },
                 new Book
                 {
@@ -44,7 +46,8 @@ namespace AuthServer.API.Database
                     DatePublished = new DateTime(1813,1,28),
                     ISBN = "9781611067095",
                     Description = "Pride and Prejudice is a humorous story of love and life among English gentility during the Georgian era",
-                    Stock = 8
+                    Stock = 8,
+                    Price = new decimal(10.99)
                 },
                 new Book
                 {
@@ -53,7 +56,8 @@ namespace AuthServer.API.Database
                     DatePublished = new DateTime().AddYears(1615),
                     ISBN = "9780805511963",
                     Description = "Alonso Quixana is an older gentleman who lives in La Mancha, in the Spanish countryside. He has read many of the books of chivalry and as a result, he has lost his wits, and he decides to roam the country as a knight-errant named Don Quixote de La Mancha. ",
-                    Stock = 11
+                    Stock = 11,
+                    Price = new decimal(5.99) 
                 },
                 new Book
                 {
@@ -71,7 +75,8 @@ namespace AuthServer.API.Database
                     DatePublished = new DateTime(1925, 4, 10),
                     ISBN = "9781556513268",
                     Description = "The story primarily concerns the young and mysterious millionaire Jay Gatsby and his quixotic passion and obsession for the beautiful former debutante Daisy Buchanan",
-                    Stock = 4
+                    Stock = 4,
+                    Price = new decimal(12.99)
                 },
                 new Book
                 {
@@ -80,7 +85,8 @@ namespace AuthServer.API.Database
                     DatePublished = new DateTime(1851, 10, 18),
                     ISBN = "9781974305032",
                     Description = "The book is sailor Ishmael's narrative of the obsessive quest of Ahab, captain of the whaling ship Pequod, for revenge on Moby Dick, the white whale that on the ship's previous voyage bit off Ahab's leg at the knee",
-                    Stock = 1
+                    Stock = 1,
+                    Price = new decimal(9.99)
                 },
                 new Book
                 {
@@ -89,7 +95,8 @@ namespace AuthServer.API.Database
                     DatePublished = new DateTime().AddYears(1823),
                     ISBN = "9781977841438",
                     Description = "Frankenstein follows Victor Frankenstein's triumph as he reanimates a dead body, and then his guilt for creating such a thing.",
-                    Stock = 12
+                    Stock = 12,
+                    Price = new decimal(11.99)
                 },
                 new Book
                 {
@@ -98,7 +105,8 @@ namespace AuthServer.API.Database
                     DatePublished = new DateTime(1890, 6, 20),
                     Description = "The Picture of Dorian Gray begins on a beautiful summer day in Victorian era England, where Lord Henry Wotton, an opinionated man, is observing the sensitive artist Basil Hallward painting the portrait of Dorian Gray, a handsome young man who is Basil's ultimate muse.",
                     ISBN = "9781546899457",
-                    Stock = 4
+                    Stock = 4,
+                    Price = new decimal(7.99)
                 },
                 new Book
                 {
@@ -107,7 +115,8 @@ namespace AuthServer.API.Database
                     DatePublished = new DateTime().AddYears(2015),
                     Description = "In Android Programming, Ryan Hodson provides a useful overview of the Android application lifecycle. Topics ranging from creating a UI to adding widgets and embedding fragments are covered, and he provides plenty of links to Android documentation along the way",
                     ISBN = "1548494658",
-                    Stock = 12
+                    Stock = 12,
+                    Price = new decimal(13.99)
                 }
             };
 

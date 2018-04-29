@@ -14,6 +14,8 @@ namespace AuthServer.API.Models
         public int Stock { get; set; }
         public DateTime DatePublished { get; set; }
         public string ISBN { get; set; }
+        public decimal Price { get; set; }
         public virtual ICollection<BookAuthor> Authors { get; set; }
+        public virtual ICollection<OrderBook> Orders { get; set; }
     }
 }

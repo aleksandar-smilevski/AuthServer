@@ -9,7 +9,7 @@ using AuthServer.Core.Models;
 namespace AuthServer.Core.Controllers
 {
     public class HomeController : Controller
-    {
+    {   
         public IActionResult Index()
         {
             return View();

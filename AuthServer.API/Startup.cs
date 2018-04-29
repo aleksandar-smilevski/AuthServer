@@ -32,6 +32,9 @@ namespace AuthServer.API
 
             services.AddDbContext<ApplicationDbContext>(opts =>
                 opts.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<UsersDbContext>(opts =>
+                opts.UseSqlServer(Configuration.GetConnectionString("UsersDatabase")));
             
            
             services.AddScoped<IAuthorRepository,AuthorRepository>();
@@ -50,11 +53,13 @@ namespace AuthServer.API
                     .ForMember(x => x.Books, opt => opt.MapFrom(src => src.Books.Select(x => x.Book).ToList()));
                 cfg.CreateMap<Book, BookPreviewDto>();
                 cfg.CreateMap<AuthorDto, Author>().ForMember(x => x.Books, opt => opt.Ignore());
-                cfg.CreateMap<BookPreviewDto, Book>().ForMember(x => x.Authors, opt => opt.Ignore());
+                cfg.CreateMap<BookPreviewDto, Book>().ForMember(x => x.Authors, opt => opt.Ignore())
+                    .ForMember(x => x.Orders, opt => opt.Ignore());
                 
                 cfg.CreateMap<Book, BookDto>()
                     .ForMember(x => x.Authors, opt => opt.MapFrom(src => src.Authors.Select(x => x.Author).ToList()));
-                cfg.CreateMap<BookDto, Book>().ForMember(x => x.Authors, opt => opt.Ignore());
+                cfg.CreateMap<BookDto, Book>().ForMember(x => x.Authors, opt => opt.Ignore())
+                    .ForMember(x => x.Orders, opt => opt.Ignore());
                 cfg.CreateMap<Author, AuthorPreviewDto>();
                 cfg.CreateMap<AuthorPreviewDto, Author>().ForMember(x => x.Books, opt => opt.Ignore());
 //                cfg.CreateMap<Book, BookDto>();

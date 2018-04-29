@@ -15,6 +15,8 @@ namespace AuthServer.API.Database
         public DbSet<Book> Books { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<BookAuthor> BookAuthors { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderBook> OrderBooks { get; set; }
     }
     
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ApplicationDbContext>

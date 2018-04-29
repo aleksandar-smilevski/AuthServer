@@ -11,6 +11,7 @@ namespace AuthServer.MVC.Models
         public int Stock { get; set; }
         public DateTime DatePublished { get; set; }    
         public string ISBN { get; set; }
+        public decimal Price { get; set; }
         public List<AuthorPreviewDto> Authors { get; set; }
     }
 }

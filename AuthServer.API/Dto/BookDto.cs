@@ -11,6 +11,8 @@ namespace AuthServer.API.Dto
         public int Stock { get; set; }
         public DateTime DatePublished { get; set; }    
         public string ISBN { get; set; }
+        public decimal Price { get; set; }
         public List<AuthorPreviewDto> Authors { get; set; }
+        public List<string> Orders { get; set; }
     }
 }

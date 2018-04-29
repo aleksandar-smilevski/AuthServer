@@ -10,5 +10,6 @@ namespace AuthServer.API.Dto
         public int? Stock { get; set; }
         public DateTime? DatePublished { get; set; }    
         public string ISBN { get; set; }
+        public decimal Price { get; set; }
     }
 }

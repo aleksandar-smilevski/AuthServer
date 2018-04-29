@@ -10,6 +10,7 @@ namespace AuthServer.MVC.Models
         public string Description { get; set; }
         public int? Stock { get; set; }
         public DateTime? DatePublished { get; set; }
+        public decimal? Price { get; set; }
         public string ISBN { get; set; }
     }
 }
