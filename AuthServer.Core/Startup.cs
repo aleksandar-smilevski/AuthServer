@@ -11,6 +11,7 @@ using AuthServer.Core.Data;
 using AuthServer.Core.Models;
 using AuthServer.Core.Services;
 using IdentityServer4.AspNetIdentity;
+using IdentityServer4.Hosting;
 
 namespace AuthServer.Core
 {
@@ -36,6 +37,8 @@ namespace AuthServer.Core
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            services.AddCors();
+            
             services.AddMvc();
 
             services.AddIdentityServer()
@@ -61,6 +64,13 @@ namespace AuthServer.Core
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            
+            app.UseCors(policy =>
+            {
+                policy.AllowAnyOrigin();
+                policy.AllowAnyMethod();
+                policy.AllowAnyHeader();
+            });
 
             app.UseStaticFiles();
 
@@ -82,7 +92,7 @@ namespace AuthServer.Core
             {
                 var appDbContext = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
-                appDbContext.Database.EnsureDeleted();
+                //appDbContext.Database.EnsureDeleted();
                 appDbContext.Database.Migrate();
 
                 var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();

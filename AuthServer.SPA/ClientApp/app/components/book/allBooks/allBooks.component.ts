@@ -1,7 +1,8 @@
 import {Component} from "@angular/core";
 import {Book} from "../../../models/book";
-import {Http} from "@angular/http";
+import {Headers, Http, RequestOptions} from "@angular/http";
 import {WebResponseType} from "../../../helpers/webResponseType";
+import {AuthService} from "../../../authentication/authService";
 
 @Component({
     selector: 'all-books',
@@ -11,12 +12,16 @@ export class AllBooksComponent{
     private booksLoaded: boolean = false;
     private allBooks: Book[];
     
-    constructor(private http: Http){
+    constructor(private http: Http, private authService: AuthService){
         this.getBooks();
     }
     
     getBooks(){
-        this.http.get('http://localhost:5004/api/books/all')
+        let headers = new Headers();
+        headers.append('Authorization', this.authService.getBearerToken());
+        let opts = new RequestOptions();
+        opts.headers = headers;
+        this.http.get('http://localhost:5004/api/books/all', opts)
             .map(res => res.json())
             .subscribe((res) => {
                 if (res.responseType == WebResponseType.Success){

@@ -73,7 +73,6 @@ namespace AuthServer.Core
                     AllowedScopes = new List<string> { "openid", "profile", "AuthServer.ReadOnly" },
                     RedirectUris = new List<string> { "http://localhost:5003/auth-callback" },
                     PostLogoutRedirectUris = new List<string> { "http://localhost:5003/" },
-                    AllowedCorsOrigins = new List<string> { "http://localhost:5003" },
                     RequireConsent = false,
                     AllowAccessTokensViaBrowser = true,
                     AlwaysIncludeUserClaimsInIdToken = true,

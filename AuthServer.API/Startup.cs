@@ -79,7 +79,7 @@ namespace AuthServer.API
             {
                 opts.AddPolicy("FullAccess", builder =>
                     {
-                        builder.RequireScope(JwtClaimTypes.Scope, "AuthServer.Full");
+                        builder.AddAuthenticationSchemes("Bearer").RequireScope("AuthServer.Full");
                     });
                 
                 opts.AddPolicy("ReadOnly", builder =>
@@ -87,7 +87,8 @@ namespace AuthServer.API
                         builder.AddAuthenticationSchemes("Bearer").RequireAssertion(handler =>
                             {
                                 return handler.User.HasClaim(x =>
-                                    x.Type == JwtClaimTypes.Scope && x.Value == "AuthServer.ReadOnly");
+                                    x.Type == JwtClaimTypes.Scope && x.Value == "AuthServer.ReadOnly") ||
+                                       handler.User.HasClaim(x => x.Type == JwtClaimTypes.Scope && x.Value == "AuthServer.FullAccess");
                             });
                     });
                 
@@ -115,6 +116,8 @@ namespace AuthServer.API
             app.UseCors(options =>
             {
                 options.AllowAnyOrigin();
+                options.AllowAnyHeader();
+                options.AllowAnyMethod();
             });
             
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AuthServer.API.Controllers
 {
     [Route("api/books")]
+    [Authorize(AuthenticationSchemes = "Bearer", Policy="ReadOnly")]
     public class BooksController : Controller
     {
         private readonly IBookRepository _bookRepository;
