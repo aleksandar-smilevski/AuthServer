@@ -44,7 +44,7 @@ namespace AuthServer.MVC
                         RoleClaimType = "role",
                         NameClaimType = "name"
                     };
-                    options.Scope.Add("AuthServer.ReadOnly");
+                    options.Scope.Add("AuthServer.Full");
                 });
 
             services.AddAuthorization(options =>

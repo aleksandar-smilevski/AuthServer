@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AuthServer.MVC.Helpers;
 using AuthServer.MVC.Models;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -23,6 +24,8 @@ namespace AuthServer.MVC.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    var token = await HttpContext.GetTokenAsync("access_token");
+                    client.SetBearerToken(token);
                     var response = await client.GetAsync(new Uri("http://localhost:5004/api/authors"));
                     if (response.IsSuccessStatusCode)
                     {
@@ -48,6 +51,8 @@ namespace AuthServer.MVC.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    var token = await HttpContext.GetTokenAsync("access_token");
+                    client.SetBearerToken(token);
                     var response = await client.GetAsync(new Uri($"http://localhost:5004/api/authors/{id}"));
                     if (response.IsSuccessStatusCode)
                     {
@@ -82,6 +87,8 @@ namespace AuthServer.MVC.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        var token = await HttpContext.GetTokenAsync("access_token");
+                        client.SetBearerToken(token);
                         var jsonString = JsonConvert.SerializeObject(newAuthor);
                         
                         var response = await client.PostAsync(new Uri($"http://localhost:5004/api/authors/"), new StringContent(jsonString, Encoding.UTF8, "application/json"));
@@ -116,6 +123,8 @@ namespace AuthServer.MVC.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    var token = await HttpContext.GetTokenAsync("access_token");
+                    client.SetBearerToken(token);
                     var response = await client.GetAsync(new Uri($"http://localhost:5004/api/authors/{id}"));
                     if (response.IsSuccessStatusCode)
                     {
@@ -146,6 +155,8 @@ namespace AuthServer.MVC.Controllers
                 {
                     using (var client = new HttpClient())
                     {
+                        var token = await HttpContext.GetTokenAsync("access_token");
+                        client.SetBearerToken(token);
                         var jsonString = JsonConvert.SerializeObject(newAuthor);
                         
                         var response = await client.PostAsync(new Uri($"http://localhost:5004/api/authors/update/"), new StringContent(jsonString, Encoding.UTF8, "application/json"));
@@ -184,6 +195,8 @@ namespace AuthServer.MVC.Controllers
             {
                 using (var client = new HttpClient())
                 {
+                    var token = await HttpContext.GetTokenAsync("access_token");
+                    client.SetBearerToken(token);
                     var response = await client.PostAsync(new Uri($"http://localhost:5004/api/authors/delete/{id}"), new StringContent(""));
                     if (response.IsSuccessStatusCode)
                     {

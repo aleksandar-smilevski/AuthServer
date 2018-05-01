@@ -20,6 +20,7 @@ namespace AuthServer.API.Controllers
 
         // GET
         [HttpGet("getTitles")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetTitles()
         {
             try

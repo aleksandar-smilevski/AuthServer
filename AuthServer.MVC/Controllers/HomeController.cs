@@ -53,8 +53,8 @@ namespace AuthServer.MVC.Controllers
         
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync("oidc");
             await HttpContext.SignOutAsync("Cookies");
+            await HttpContext.SignOutAsync("oidc");
             return RedirectToAction("Index");
         }
     }
