@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {Observable} from "rxjs/Observable";
 import {Book} from "../../models/book";
 import {CartService} from "../cart/cart.service";
+import {Order} from "../../models/order";
 
 @Component({
     selector: 'cart-items',
@@ -10,6 +11,7 @@ import {CartService} from "../cart/cart.service";
 export class CartItemsComponent {
     public shoppingCartItems$: Observable<Book[]>;
     public shoppingCartItems: Book[]  = [];
+    private order: Order = new Order();
     
     constructor(private cartService: CartService){
         this.shoppingCartItems$ = this
@@ -19,8 +21,8 @@ export class CartItemsComponent {
         this.shoppingCartItems$.subscribe(_ => this.shoppingCartItems =  _);
     }
     
-    quantityChanged(e: Event, item: Book){
-        
+    onFormSubmit(myForm: any){
+       console.log(myForm.value);
     }
     
 }

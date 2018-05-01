@@ -1,21 +1,52 @@
+<div class="row">
+    <div class="col s12">
+        <h5>Your Items</h5>
+        <table class="stripped">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Price</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
 
-<h5>Your Items</h5>
-<table>
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>ISBN</th>
-        <th>Price</th>
-        <th>Quantity</th>
-    </tr>
-    </thead>
+            <tbody>
+            <tr *ngFor="let item of shoppingCartItems">
+                <td>{{item.title}}</td>
+                <td>{{item.isbn}}</td>
+                <td>{{item.price * 2}}</td>
+                <td><input type="number" value="1" max="{{item.stock}}" min="0" (change)="quantityChanged($event,item)"/></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col s12">
+        <div class="divider"></div>
+        <div class="section">Shipment Details
+            <div class="row">
+                <form class="col s12" #myForm="ngForm" (ngSubmit) = "onFormSubmit(myForm)">
+                    <div class="row">
+                        <div class="input-field col s12 m6">
+                            <input type="text" [(ngModel)]="order.firstName" name="firstName" placeholder="First Name" required class="validate">
+                            <label>First Name</label>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input type="text" [(ngModel)]="order.lastName" name="lastName" placeholder="Last Name" required class="validate">
+                            <label>Last Name</label>
+                        </div>
+                        <div class="input-field col s12">
+                            <input type="text" [(ngModel)]="order.address" name="address" placeholder="Address" required class="validate">
+                            <label>Address</label>
+                        </div>
+                        <div class="col s12">
+                            <button class="btn waves-effect waves-light cyan darken-4" type="submit" [disabled]="!myForm.form.valid">Buy</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <tbody>
-    <tr *ngFor="let item of shoppingCartItems">
-        <td>{{item.title}}</td>
-        <td>{{item.isbn}}</td>
-        <td>$0.87</td>
-        <td><input type="number" value="1" max="{{item.stock}}" min="0" (change)="quantityChanged($event,item)"/></td>
-    </tr>
-    </tbody>
-</table>
+

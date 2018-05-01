@@ -53,7 +53,7 @@ export function getClientSettings(): UserManagerSettings {
         redirect_uri: 'http://localhost:5003/auth-callback',
         post_logout_redirect_uri: 'http://localhost:5003/',
         response_type: 'id_token token',
-        scope: 'openid profile api1',
+        scope: 'openid profile AuthServer.ReadOnly',
         filterProtocolClaims: true,
         loadUserInfo: true,
         userStore: new WebStorageStateStore({ store: window.localStorage })

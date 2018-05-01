@@ -13,7 +13,17 @@ namespace AuthServer.Core
             //Setup API to be protected
             return new List<ApiResource>
             {
-                new ApiResource("api1")
+                new ApiResource
+                {
+                    Name = "AuthServer.API",
+                    DisplayName = "AuthServer.API",
+                    Enabled = true,
+                    Scopes = new List<Scope>
+                    {
+                        new Scope("AuthServer.Full"),
+                        new Scope("AuthServer.ReadOnly")
+                    }
+                }
             };
         }
 
@@ -29,13 +39,13 @@ namespace AuthServer.Core
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "AuthServer.Full" }
                 },
                 //MVC Client
                 new Client
                 {
                     ClientId = "MVC",
-                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     RequireClientSecret = true,
                     RequireConsent = false,
                     RedirectUris = { "http://localhost:5002/signin-oidc" },
@@ -49,7 +59,8 @@ namespace AuthServer.Core
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
                         IdentityServerConstants.StandardScopes.Email,
-                        "api1"
+                        "AuthServer.Full",
+                        "AuthServer.ReadOnly"
                     },
                     AlwaysIncludeUserClaimsInIdToken = true
 
@@ -59,7 +70,7 @@ namespace AuthServer.Core
                     ClientId = "angular_spa",
                     ClientName = "Angular 4 Client",
                     AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowedScopes = new List<string> { "openid", "profile", "api1" },
+                    AllowedScopes = new List<string> { "openid", "profile", "AuthServer.ReadOnly" },
                     RedirectUris = new List<string> { "http://localhost:5003/auth-callback" },
                     PostLogoutRedirectUris = new List<string> { "http://localhost:5003/" },
                     AllowedCorsOrigins = new List<string> { "http://localhost:5003" },
@@ -79,7 +90,7 @@ namespace AuthServer.Core
                         new Secret("myClientSecret".Sha256())
                     },
                     AllowedGrantTypes = GrantTypes.Code,
-                    AllowedScopes = new List<string> { "openid", "profile", "api1" },
+                    AllowedScopes = new List<string> { "openid", "profile", "AuthServer.ReadOnly" },
                     RedirectUris = new List<string> { "com.authserver.android://callback" },
                     RequireConsent = false
                 }

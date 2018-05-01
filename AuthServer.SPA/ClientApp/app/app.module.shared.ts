@@ -28,23 +28,27 @@ const routes: Routes = [
     
     {
         path: 'cart',
-        // canActivate: [AuthGuardService],
+        canActivate: [AuthGuardService],
         component: CartItemsComponent
     },
     {
         path: 'home',
+        canActivate: [AuthGuardService],
         component: HomeComponent
     },
     {
         path: 'authors',
+        canActivate: [AuthGuardService],
         component: AllAuthorsComponent
     },
     {
         path: 'books',
+        canActivate: [AuthGuardService],
         component: AllBooksComponent
     },
     {
         path: 'books/:id',
+        canActivate: [AuthGuardService],
         component: BookDetailsComponent
     },
     {
@@ -53,6 +57,7 @@ const routes: Routes = [
     },
     {
         path:'author-details/:id',
+        canActivate: [AuthGuardService],
         component: AuthorDetailsComponent
     }
 ];

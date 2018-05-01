@@ -6,7 +6,9 @@ using AuthServer.API.Models;
 using AuthServer.API.Repositories.Author;
 using AuthServer.API.Repositories.Book;
 using AutoMapper;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -62,16 +64,34 @@ namespace AuthServer.API
                     .ForMember(x => x.Orders, opt => opt.Ignore());
                 cfg.CreateMap<Author, AuthorPreviewDto>();
                 cfg.CreateMap<AuthorPreviewDto, Author>().ForMember(x => x.Books, opt => opt.Ignore());
-//                cfg.CreateMap<Book, BookDto>();
             });
-
-            services.AddAuthentication()
-                .AddJwtBearer(options =>
+            
+            services.AddAuthentication("Bearer") 
+                .AddIdentityServerAuthentication(options =>
                 {
                     options.Authority = "http://localhost:5000";
                     options.RequireHttpsMetadata = false;
-                    options.Audience = "Api1";
+
+                    options.ApiName = "AuthServer.API";
                 });
+           
+            services.AddAuthorization(opts =>
+            {
+                opts.AddPolicy("FullAccess", builder =>
+                    {
+                        builder.RequireScope(JwtClaimTypes.Scope, "AuthServer.Full");
+                    });
+                
+                opts.AddPolicy("ReadOnly", builder =>
+                    {
+                        builder.AddAuthenticationSchemes("Bearer").RequireAssertion(handler =>
+                            {
+                                return handler.User.HasClaim(x =>
+                                    x.Type == JwtClaimTypes.Scope && x.Value == "AuthServer.ReadOnly");
+                            });
+                    });
+                
+            });
             
             Mapper.AssertConfigurationIsValid();
         }

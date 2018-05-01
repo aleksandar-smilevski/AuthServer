@@ -27,10 +27,12 @@
                                 <h5>Books in stock</h5>
                                 <p>{{book.stock}}</p>
                             </div>
-                            <div class="col s12 right-align">
-                                <!--<h5 style="opacity: 0">button</h5>-->
+                            <div class="col s12 m6">
+                                <h5>Price</h5>
+                                <p>{{book.price | currency: 'EUR': 'symbol'}}</p>
+                            </div>
+                            <div class="col s12" style="margin-top: 15px">
                                 <button class="btn waves-effect waves-light" (click)="addToCart(book)">Add to cart
-                                    
                                     <i class="material-icons right">add</i>
                                 </button>
                             </div>

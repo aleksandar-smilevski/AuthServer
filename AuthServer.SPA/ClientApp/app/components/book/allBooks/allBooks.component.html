@@ -1,12 +1,13 @@
 <div class="row">
-    <div class="col s12 m4" *ngFor="let book of allBooks">
+    <div class="col s12 m6 l4" *ngFor="let book of allBooks">
         <div class="card">
             <div class="card-image">
                 <img src="http://via.placeholder.com/300x150">
-                <span class="card-title">{{book.title}}</span>
+                
             </div>
             <div class="card-content">
-                <p class="truncate">{{book.description}}</p>
+                <h6 style="font-weight: bold">{{book.title}}</h6>
+                <p class="truncate left-align">{{book.price | currency :'EUR' : 'symbol'}}</p>
             </div>
             <div class="card-action">
                 <a routerLink="/books/{{book.id}}">More</a>

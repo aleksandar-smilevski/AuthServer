@@ -4,11 +4,13 @@ using System.Threading.Tasks;
 using AuthServer.API.Dto;
 using AuthServer.API.Helpers;
 using AuthServer.API.Repositories.Author;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.API.Controllers
 {
     [Route("api/authors")]
+    [Authorize(AuthenticationSchemes = "Bearer", Policy="ReadOnly")]
     public class AuthorsController : Controller
     {
         
@@ -74,6 +76,7 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpPost]
+        [Authorize(Policy = "FullAccess")]
         public async Task<ResponseObject<bool>> Create([FromBody] AuthorDto entity)
         {
             try
@@ -93,6 +96,7 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpPost("update")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ResponseObject<bool>> Update([FromBody] AuthorDto entity)
         {
             try
@@ -112,6 +116,7 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpPost("delete/{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ResponseObject<bool>> Delete(Guid id)
         {
             try

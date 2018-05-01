@@ -37,12 +37,14 @@ namespace AuthServer.MVC
                     options.ClientId = "MVC";
                     options.ClientSecret = "secret";
                     options.SaveTokens = true;
+                    options.ResponseType = "code id_token";
                     options.GetClaimsFromUserInfoEndpoint = true;
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         RoleClaimType = "role",
                         NameClaimType = "name"
                     };
+                    options.Scope.Add("AuthServer.ReadOnly");
                 });
 
             services.AddAuthorization(options =>

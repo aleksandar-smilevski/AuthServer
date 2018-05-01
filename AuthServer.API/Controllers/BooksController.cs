@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthServer.API.Controllers
 {
-    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/books")]
     public class BooksController : Controller
     {
@@ -76,6 +75,7 @@ namespace AuthServer.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Create([FromBody] BookDto entity)
         {
             try
@@ -91,6 +91,7 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpPost("update")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Update([FromBody] BookDto entity)
         {
             try
@@ -106,6 +107,7 @@ namespace AuthServer.API.Controllers
         }
         
         [HttpPost("delete/{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> Delete(Guid id)
         {
             try
